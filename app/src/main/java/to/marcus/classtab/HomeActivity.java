@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -52,24 +53,41 @@ public class HomeActivity extends AppCompatActivity {
                     while(count < artistMap.size()){
                         for(Element songData : artist.getAllElements()){
                             Elements links = songData.getAllElements().select("a[href]");
-                            String idKey = "a" + String.valueOf(count) + String.valueOf(Math.random());
                             if(links.size()==0){
                                 break;
                             }else{
                                 for(int i=0; i<links.size();i++){
-                                    songMap.put(idKey, links.get(i).attr("href"));
-                                    midiMap.put(idKey, links.get(i+1).attr("href"));
-                                    vidMap.put(idKey, links.get(i+2).attr("href"));
+                                    //todo: put this id in correct place to associate records
+                                    String idKey = generateUID("a",count);
+                                    if(links.get(i).toString().contains(".txt")){
+                                        //idKey = generateUID("a",count);
+                                        songMap.put(idKey, links.get(i).attr("href"));
+                                    }else if(links.get(i).toString().contains("MIDI")) {
+                                       // idKey = generateUID("a",count);
+                                        midiMap.put(idKey, links.get(i).attr("href"));
+                                    }else if(links.get(i).toString().contains("youtube.com")){
+                                       // idKey = generateUID("a",count);
+                                        vidMap.put(idKey, links.get(i).attr("href"));
+                                    }
                                 }
+                                count++;
                             }
                         }
-                        count++;
                     }
                 }
                 String stop = "stop";
+                //14 artists
+                //84 songs
+                //51 midis
+                //45 vids
             }
         }catch(IOException exception){
             exception.printStackTrace();
         }
+    }
+
+    private static String generateUID(String alphaIndex, int recordPtr){
+        Random rand = new Random();
+        return alphaIndex+String.valueOf(recordPtr)+"-"+ String.valueOf(rand.nextInt());
     }
 }
