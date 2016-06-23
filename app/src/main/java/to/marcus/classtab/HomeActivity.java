@@ -14,53 +14,53 @@ import java.util.Random;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String ARTISTS_INDEX = "div[class=artists]";
+    private static final String ARTIST_ELEMENT = "div[class=artist_";
+    private static final String RECORD_SONG = "song";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        InputStream inputStream = null;
-        Document document = null;
-        String elementHolder = null;
-        HashMap<String,String> artistMap = new HashMap<String,String>();
-        HashMap<String,String> songMap = new HashMap<String,String>();
-        HashMap<String,String> midiMap = new HashMap<String,String>();
-        HashMap<String,String> vidMap = new HashMap<String,String>();
-        int count = 0;
+        InputStream inputStream;
+        Document document;
+        HashMap<String,String> artistMap = new HashMap<>();
+        HashMap<String,String> songMap = new HashMap<>();
+        HashMap<String,String> midiMap = new HashMap<>();
+        HashMap<String,String> vidMap = new HashMap<>();
+        int artistCount = 0;
         try {
             inputStream = this.getAssets().open("index.htm");
-            document = Jsoup.parse(inputStream, "UTF-8", "http://placeholder.com");
+            document = Jsoup.parse(inputStream, "UTF-8", "http://www.classtab.org");
             Elements elementDiv = document.select(ARTISTS_INDEX);
             //get artist index A-Z
-           for(char indexLetter = 'a'; indexLetter <= 'b'; indexLetter++) {
+           for(char indexLetter = 'a'; indexLetter <= 'z'; indexLetter++) {
                //get artist div
-               for (Element e : elementDiv.select("div[class=artist_"+indexLetter)) {
+               for (Element e : elementDiv.select(ARTIST_ELEMENT+indexLetter)) {
                    //get artist list
                    for (Element artist : e.select("ul")) {
                        for (Element title : artist.select("b")) {
                            System.out.println(title.text());
-                           artistMap.put(indexLetter + String.valueOf(count), title.text());
+                           artistMap.put(indexLetter + String.valueOf(artistCount), title.text());
                            break;
                        }
-                       while (count < artistMap.size()) {
+                       while (artistCount < artistMap.size()) {
                            for (Element songData : artist.getAllElements()) {
                                Elements links = songData.getAllElements().select("a[href]");
                                if (links.size() == 0) {
                                    break;
                                } else {
-                                   String recordType = "song";
+                                   String recordType = RECORD_SONG;
                                    String idKey = "";
                                    for (int i = 0; i < links.size(); i++) {
-                                       //todo: put id in correct place to associate records
                                        switch (recordType) {
-                                           case "song":
-                                               idKey = generateUID(indexLetter, count);
+                                           case RECORD_SONG:
+                                               idKey = generateUID(indexLetter, artistCount);
                                                break;
                                        }
                                        if (links.get(i).toString().contains(".txt")) {
-                                           if (recordType != "song") {
-                                               idKey = generateUID(indexLetter, count);
+                                           if (recordType != RECORD_SONG) {
+                                               idKey = generateUID(indexLetter, artistCount);
                                            }
                                            songMap.put(idKey, links.get(i).attr("href"));
                                            recordType = "";
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
                                            vidMap.put(idKey, links.get(i).attr("href"));
                                        }
                                    }
-                                   count++;
+                                   artistCount++;//next artist
                                }
                            }
                        }
