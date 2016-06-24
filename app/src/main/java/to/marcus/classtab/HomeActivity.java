@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
                            break;
                        }
                        while (artistCount < artistMap.size()) {
+                           //extract per artist
                            for (Element songData : artist.getAllElements()) {
                                Elements links = songData.getAllElements().select("a[href]");
                                if (links.size() == 0) {
@@ -80,7 +82,10 @@ public class HomeActivity extends AppCompatActivity {
         }catch(IOException exception){
             exception.printStackTrace();
         }
-        String stop = "stop";
+        ArtistDAO artistDAO = new ArtistDAO(this);
+        artistDAO.populateArtists(artistMap);
+        ArrayList<Artist> artists = new ArrayList<>();
+        artists = artistDAO.getAllArtists();
     }
 
     private static String generateUID(char alphaIndex, int recordPtr){
