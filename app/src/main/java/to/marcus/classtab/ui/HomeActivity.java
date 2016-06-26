@@ -1,4 +1,4 @@
-package to.marcus.classtab;
+package to.marcus.classtab.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+
+import to.marcus.classtab.Artist;
+import to.marcus.classtab.ArtistDAO;
+import to.marcus.classtab.R;
 
 public class HomeActivity extends AppCompatActivity {
 

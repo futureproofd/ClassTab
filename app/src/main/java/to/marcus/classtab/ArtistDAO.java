@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,11 +16,11 @@ import java.util.Map;
  */
 public class ArtistDAO {
     private SQLiteDatabase database;
-    private SQLiteHelper dbHelper;
+    private SQLiteDataHelper dbHelper;
     private String[] allColumns = {"Id, Name"};
 
     public ArtistDAO(Context context){
-        dbHelper = new SQLiteHelper(context);
+        dbHelper = new SQLiteDataHelper(context);
     }
 
     public void open() throws SQLException{
@@ -43,7 +42,7 @@ public class ArtistDAO {
             values.put("Name",(String)pair.getValue());
             values.put("Id",(String)pair.getKey());
             try{
-                database.insert(SQLiteHelper.TABLE_ARTIST, null, values);
+                database.insert(SQLiteDataHelper.TABLE_ARTIST, null, values);
                 database.setTransactionSuccessful();
             }finally {
                 database.endTransaction();
@@ -55,7 +54,7 @@ public class ArtistDAO {
     public ArrayList<Artist> getAllArtists(){
         ArrayList<Artist> artists = new ArrayList<Artist>();
         open();
-        Cursor cursor = database.query(SQLiteHelper.TABLE_ARTIST, allColumns, null, null, null, null," name ", null);
+        Cursor cursor = database.query(SQLiteDataHelper.TABLE_ARTIST, allColumns, null, null, null, null," name ", null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             Artist artist = new Artist(cursor.getString(0),cursor.getString(1));

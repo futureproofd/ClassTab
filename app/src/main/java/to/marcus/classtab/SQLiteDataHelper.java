@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by marcus on 6/24/2016
  */
-public class SQLiteHelper extends SQLiteOpenHelper {
+public class SQLiteDataHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "classTab.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -18,7 +18,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             +"Id text primary key, "
             +"Name text not null);";
 
-    public SQLiteHelper(Context context){
+    public SQLiteDataHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -29,7 +29,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(SQLiteHelper.class.getSimpleName(), "Upgrading DB from version "+ oldVersion +
+        Log.w(SQLiteDataHelper.class.getSimpleName(), "Upgrading DB from version "+ oldVersion +
             " to "+ newVersion);
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_ARTIST);
         onCreate(db);
