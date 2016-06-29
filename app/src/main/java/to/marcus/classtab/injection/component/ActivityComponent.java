@@ -9,7 +9,7 @@ import to.marcus.classtab.ui.HomeActivity;
  * Inject dependencies to all activities specified
  */
 
-@Component(dependencies = ApplicationComponenet.class, modules = ActivityModule.class)
+@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 
     void inject(HomeActivity activity);

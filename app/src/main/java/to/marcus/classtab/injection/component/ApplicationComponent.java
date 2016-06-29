@@ -3,8 +3,6 @@ package to.marcus.classtab.injection.component;
 import android.app.Application;
 
 import dagger.Component;
-import to.marcus.classtab.SQLiteDataHelper;
-import to.marcus.classtab.data.DataManager;
 import to.marcus.classtab.injection.module.ApplicationModule;
 
 /**
@@ -12,10 +10,9 @@ import to.marcus.classtab.injection.module.ApplicationModule;
  */
 
 @Component(modules = ApplicationModule.class)
-public interface ApplicationComponenet {
+public interface ApplicationComponent {
 
     Application application();
-    DataManager dataManager();
-    SQLiteDataHelper databaseHelper();
-
+    //DataManager dataManager();
+    //SQLiteDataHelper databaseHelper();
 }

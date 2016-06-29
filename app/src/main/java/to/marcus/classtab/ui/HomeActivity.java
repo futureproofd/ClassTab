@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import to.marcus.classtab.Artist;
-import to.marcus.classtab.ArtistDAO;
+import to.marcus.classtab.data.model.Artist;
+import to.marcus.classtab.data.local.ArtistDataHelper;
 import to.marcus.classtab.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -45,7 +45,6 @@ public class HomeActivity extends AppCompatActivity {
                    //get artist list
                    for (Element artist : e.select("ul")) {
                        for (Element title : artist.select("b")) {
-                           System.out.println(title.text());
                            artistMap.put(indexLetter + String.valueOf(artistCount), title.text());
                            break;
                        }
@@ -69,6 +68,7 @@ public class HomeActivity extends AppCompatActivity {
                                                idKey = generateUID(indexLetter, artistCount);
                                            }
                                            songMap.put(idKey, links.get(i).attr("href"));
+                                           //// TODO: 6/29/2016 add a songTitleMap
                                            recordType = "";
                                        } else if (links.get(i).toString().contains("MIDI")) {
                                            midiMap.put(idKey, links.get(i).attr("href"));
@@ -86,10 +86,10 @@ public class HomeActivity extends AppCompatActivity {
         }catch(IOException exception){
             exception.printStackTrace();
         }
-        ArtistDAO artistDAO = new ArtistDAO(this);
-        artistDAO.populateArtists(artistMap);
+        ArtistDataHelper artistDataHelper = new ArtistDataHelper(this);
+        artistDataHelper.populateArtists(artistMap);
         ArrayList<Artist> artists = new ArrayList<>();
-        artists = artistDAO.getAllArtists();
+        artists = artistDataHelper.getAllArtists();
     }
 
     private static String generateUID(char alphaIndex, int recordPtr){

@@ -1,4 +1,4 @@
-package to.marcus.classtab;
+package to.marcus.classtab.data.model;
 
 /**
  * Created by marcus on 6/24/2016
