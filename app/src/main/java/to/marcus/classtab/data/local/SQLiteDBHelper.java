@@ -21,7 +21,10 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(ClassTabDB.ArtistTable.TABLE_CREATE);
-        //other tables go here too
+        db.execSQL(ClassTabDB.SongTable.TABLE_CREATE);
+        db.execSQL(ClassTabDB.SoundTable.TABLE_CREATE);
+        db.execSQL(ClassTabDB.VideoTable.TABLE_CREATE);
+        db.execSQL(ClassTabDB.TabTable.TABLE_CREATE);
     }
 
     @Override
@@ -29,6 +32,10 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         Log.w(SQLiteDBHelper.class.getSimpleName(), "Upgrading DB from version "+ oldVersion +
             " to "+ newVersion);
         db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.ArtistTable.TABLE_CREATE);
+        db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.SongTable.TABLE_CREATE);
+        db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.SoundTable.TABLE_CREATE);
+        db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.VideoTable.TABLE_CREATE);
+        db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.TabTable.TABLE_CREATE);
         onCreate(db);
     }
 }

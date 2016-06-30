@@ -14,4 +14,5 @@ import to.marcus.classtab.data.model.Artist;
  */
 public interface RepositoryHelper<K,V> {
     HashMap<K,V> query(SQLStatement sqlStatement);
+    //// TODO: 6/30/2016 add/remove/delete etc... 
 }

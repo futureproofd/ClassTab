@@ -18,12 +18,12 @@ import to.marcus.classtab.data.model.Artist;
 /**
  * Created by marcus on 6/24/2016
  */
-public class ArtistDataHelper implements RepositoryHelper {
+public class ArtistRepositoryHelperImpl implements RepositoryHelper {
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
     private String[] allColumns = {"Id, Name"};
 
-    public ArtistDataHelper(Context context){
+    public ArtistRepositoryHelperImpl(Context context){
         dbHelper = new SQLiteDBHelper(context);
     }
 
@@ -43,8 +43,8 @@ public class ArtistDataHelper implements RepositoryHelper {
         while (it.hasNext()){
             database.beginTransaction();
             Map.Entry pair = (Map.Entry)it.next();
-            values.put("Name",(String)pair.getValue());
-            values.put("Id",(String)pair.getKey());
+            values.put(ClassTabDB.ArtistTable.COLUMN_ID,(String)pair.getKey());
+            values.put(ClassTabDB.ArtistTable.COLUMN_NAME,(String)pair.getValue());
             try{
                 database.insert(ClassTabDB.ArtistTable.TABLE_NAME, null, values);
                 database.setTransactionSuccessful();
@@ -52,12 +52,25 @@ public class ArtistDataHelper implements RepositoryHelper {
                 database.endTransaction();
             }
         }
-        database.close();
+        close();
     }
 
     @Override
     public HashMap<String,String> query(SQLStatement sqlStatement) {
-        return null;
+        SQLStatement params = (SQLStatement) sqlStatement;
+        open();
+        HashMap<String, String> artists = new HashMap<>();
+        try{
+            Cursor cursor = database.rawQuery(params.sqlQuery(), new String[]{});
+            for(int i = 0, size = cursor.getCount(); i < size; i++){
+                cursor.moveToPosition(i);
+                artists.put(cursor.getString(0),cursor.getString(1));
+            }
+            cursor.close();
+            return artists;
+        }finally {
+            close();
+        }
     }
 
     //Make Rx, and communicate with DataManager

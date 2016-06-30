@@ -8,12 +8,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import to.marcus.classtab.data.model.Artist;
-import to.marcus.classtab.data.local.ArtistDataHelper;
+import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
+import to.marcus.classtab.data.local.contract.query.AllArtistsQuery;
+import to.marcus.classtab.data.local.ArtistRepositoryHelperImpl;
 import to.marcus.classtab.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -86,10 +86,15 @@ public class HomeActivity extends AppCompatActivity {
         }catch(IOException exception){
             exception.printStackTrace();
         }
-        ArtistDataHelper artistDataHelper = new ArtistDataHelper(this);
-        artistDataHelper.populateArtists(artistMap);
-        ArrayList<Artist> artists = new ArrayList<>();
-        artists = artistDataHelper.getAllArtists();
+        ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(this);
+        artistRepositoryHelperImpl.populateArtists(artistMap);
+        HashMap<String,String> artists = new HashMap<>();
+        artists =  artistRepositoryHelperImpl.query(new AllArtistsQuery());
+
+        //test
+        TabRepositoryHelperImpl tabRepositoryHelperImpl = new TabRepositoryHelperImpl(this);
+        tabRepositoryHelperImpl.populateTabs(songMap);
+        HashMap<String,String> tabs = new HashMap<>();
     }
 
     private static String generateUID(char alphaIndex, int recordPtr){
