@@ -12,18 +12,23 @@ import to.marcus.classtab.injection.module.ApplicationModule;
  */
 public class ClassTabApplication extends Application {
 
-    ApplicationComponent mApplicationComponent;
+    private static ApplicationComponent sApplicationComponent;
+
+    @Override
+    public void onCreate(){
+        super.onCreate();
+        if(sApplicationComponent == null){
+            sApplicationComponent = DaggerApplicationComponent.builder()
+                    .applicationModule(new ApplicationModule(this))
+                    .build();
+        }
+    }
 
     public static ClassTabApplication get(Context context){
         return (ClassTabApplication)context.getApplicationContext();
     }
 
-    public ApplicationComponent getApplicationComponent(){
-        if(mApplicationComponent == null){
-            mApplicationComponent = DaggerApplicationComponent.builder()
-                    .applicationModule(new ApplicationModule(this))
-                    .build();
-        }
-        return mApplicationComponent;
+    public static ApplicationComponent getApplicationComponent(){
+        return sApplicationComponent;
     }
 }

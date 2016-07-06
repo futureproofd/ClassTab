@@ -33,12 +33,12 @@ public class ClassTabDB {
     public abstract static class TabTable{
         public static final String TABLE_NAME = "tab";
         public static final String COLUMN_ID = "id";
-        public static final String COLUMN_NAME = "file";
+        public static final String COLUMN_FILE = "file";
 
         public static final String TABLE_CREATE = "create table "
                 +TABLE_NAME +"("
                 +COLUMN_ID+" text primary key, "
-                +COLUMN_NAME+" text not null);";
+                +COLUMN_FILE+" BLOB not null);";
     }
 
     public abstract static class SoundTable{

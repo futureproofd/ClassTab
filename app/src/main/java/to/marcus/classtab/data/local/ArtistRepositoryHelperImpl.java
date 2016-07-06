@@ -57,11 +57,10 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
 
     @Override
     public HashMap<String,String> query(SQLStatement sqlStatement) {
-        SQLStatement params = (SQLStatement) sqlStatement;
         open();
         HashMap<String, String> artists = new HashMap<>();
         try{
-            Cursor cursor = database.rawQuery(params.sqlQuery(), new String[]{});
+            Cursor cursor = database.rawQuery(sqlStatement.sqlQuery(), new String[]{});
             for(int i = 0, size = cursor.getCount(); i < size; i++){
                 cursor.moveToPosition(i);
                 artists.put(cursor.getString(0),cursor.getString(1));

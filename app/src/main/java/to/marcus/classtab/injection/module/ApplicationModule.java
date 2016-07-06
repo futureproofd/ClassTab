@@ -3,6 +3,8 @@ package to.marcus.classtab.injection.module;
 import android.app.Application;
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -22,9 +24,8 @@ public class ApplicationModule {
         return mApplication;
     }
 
-    @Provides
+    @Provides @Singleton
     Context provideContext(){
         return mApplication;
     }
-
 }
