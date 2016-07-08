@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -94,11 +93,13 @@ public class WebParser {
             exception.printStackTrace();
         }
 
+        /*
+        //// TODO: 7/8/2016 Re-use these for bootstrap process 
         ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(mContext);
         artistRepositoryHelperImpl.populateArtists(artistMap);
         HashMap<String,String> artists = new HashMap<>();
         artists =  artistRepositoryHelperImpl.query(new AllArtistsQuery());
-
+        */
         /*works but only needs to run once!
         TabRepositoryHelperImpl tabRepositoryHelperImpl = new TabRepositoryHelperImpl(this);
         tabRepositoryHelperImpl.populateTabs(songMap);

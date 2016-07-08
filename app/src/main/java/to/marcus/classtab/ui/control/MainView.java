@@ -7,4 +7,5 @@ import java.util.HashMap;
  */
 public interface MainView extends BaseView {
     void showTabs(HashMap<String,byte[]> tabs);
+    void showArtists(HashMap<String,String>artists);
 }

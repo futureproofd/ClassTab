@@ -1,5 +1,6 @@
 package to.marcus.classtab.data.local;
 
+import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
 import to.marcus.classtab.data.local.contract.SQLStatement;
@@ -18,12 +22,15 @@ import to.marcus.classtab.data.model.Artist;
 /**
  * Created by marcus on 6/24/2016
  */
-public class ArtistRepositoryHelperImpl{
+public class ArtistRepositoryHelperImpl implements RepositoryHelper {
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
     private String[] allColumns = {"Id, Name"};
+    private Context mContext;
 
-    public ArtistRepositoryHelperImpl(Context context){
+    @Inject
+    public ArtistRepositoryHelperImpl(Application context){
+        this.mContext = context;
         dbHelper = new SQLiteDBHelper(context);
     }
 
@@ -55,21 +62,32 @@ public class ArtistRepositoryHelperImpl{
         close();
     }
 
-
-    public HashMap<String,String> query(SQLStatement sqlStatement) {
-        open();
-        HashMap<String, String> artists = new HashMap<>();
-        try{
-            Cursor cursor = database.rawQuery(sqlStatement.sqlQuery(), new String[]{});
-            for(int i = 0, size = cursor.getCount(); i < size; i++){
-                cursor.moveToPosition(i);
-                artists.put(cursor.getString(0),cursor.getString(1));
+    /**
+     * RepositoryHelper implementation to get a Database recordset
+     * @param sqlStatement A raw, parameterized SQL query
+     * @return Callable for an Observable
+     */
+    @Override
+    public Callable<HashMap<String,String>> query(SQLStatement sqlStatement) {
+        final String SQLQuery = sqlStatement.sqlQuery();
+        return new Callable<HashMap<String, String>>() {
+            @Override
+            public HashMap<String, String> call() throws Exception {
+                open();
+                HashMap<String, String> artists = new HashMap<>();
+                try{
+                    Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
+                    for(int i = 0, size = cursor.getCount(); i < size; i++){
+                        cursor.moveToPosition(i);
+                        artists.put(cursor.getString(0),cursor.getString(1));
+                    }
+                    cursor.close();
+                    return artists;
+                }finally {
+                    close();
+                }
             }
-            cursor.close();
-            return artists;
-        }finally {
-            close();
-        }
+        };
     }
 
     //Make Rx, and communicate with DataManager

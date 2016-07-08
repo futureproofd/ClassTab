@@ -9,7 +9,9 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscriber;
+import to.marcus.classtab.data.local.ArtistRepositoryHelperImpl;
 import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
+import to.marcus.classtab.data.local.contract.query.AllArtistsQuery;
 import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
 
 
@@ -19,14 +21,21 @@ import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
  */
 public class DataManager {
     private TabRepositoryHelperImpl tabRepositoryHelper;
+    private ArtistRepositoryHelperImpl artistRepositoryHelper;
 
     @Inject
-    public DataManager(TabRepositoryHelperImpl tabRepositoryHelper){
+    public DataManager(TabRepositoryHelperImpl tabRepositoryHelper
+            ,ArtistRepositoryHelperImpl artistRepositoryHelper){
         this.tabRepositoryHelper = tabRepositoryHelper;
+        this.artistRepositoryHelper = artistRepositoryHelper;
     }
 
     public Observable<HashMap<String,byte[]>> getTabs(){
         return makeObservable(tabRepositoryHelper.query(new AllTabsQuery()));
+    }
+
+    public Observable<HashMap<String,String>> getArtists(){
+        return makeObservable(artistRepositoryHelper.query(new AllArtistsQuery()));
     }
 
     /**

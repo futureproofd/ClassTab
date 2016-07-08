@@ -31,6 +31,18 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
                 });
     }
 
+    public void loadArtists(){
+        mDataManager.getArtists()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<HashMap<String, String>>() {
+                    @Override
+                    public void call(HashMap<String, String> artists) {
+                        getView().showArtists(artists);
+                    }
+                });
+    }
+
     @Override
     public void attachView(MainView mainView){
         super.attachView(mainView);
