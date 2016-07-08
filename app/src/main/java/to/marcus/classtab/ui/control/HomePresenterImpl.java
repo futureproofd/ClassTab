@@ -1,10 +1,12 @@
 package to.marcus.classtab.ui.control;
 
-import android.provider.ContactsContract;
-import android.util.Log;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import to.marcus.classtab.data.DataManager;
 
 /**
@@ -17,12 +19,17 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
         this.mDataManager = dataManager;
     }
 
-    public void doSomething(){
-        Log.i("PRESENTER","Did something");
-        mDataManager.doSomething();
+    public void loadTabs(){
+        mDataManager.getTabs()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<HashMap<String, byte[]>>(){
+                    @Override
+                    public void call(HashMap<String, byte[]> tabs) {
+                        getView().showTabs(tabs);
+                    }
+                });
     }
-
-
 
     @Override
     public void attachView(MainView mainView){

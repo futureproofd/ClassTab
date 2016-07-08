@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
@@ -31,22 +32,33 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         this.mContext = context;
         dbHelper = new SQLiteDBHelper(context);
     }
-    
+
+    /**
+     * RepositoryHelper implementation to get a Database recordset
+     * @param sqlStatement A raw, parameterized SQL query
+     * @return Callable for an Observable
+     */
     @Override
-    public HashMap query(SQLStatement sqlStatement) {
-        open();
-        HashMap<String, byte[]> tabs = new HashMap<>();
-        try{
-            Cursor cursor = database.rawQuery(sqlStatement.sqlQuery(), new String[]{});
-            for(int i = 0, size = cursor.getCount(); i < size; i++){
-                cursor.moveToPosition(i);
-                tabs.put(cursor.getString(0),cursor.getBlob(1));
+    public Callable<HashMap<String, byte[]>> query(final SQLStatement sqlStatement) {
+        final String SQLQuery = sqlStatement.sqlQuery();
+        return new Callable<HashMap<String, byte[]>>() {
+            @Override
+            public HashMap<String, byte[]> call() throws Exception {
+                open();
+                HashMap<String, byte[]> tabs = new HashMap<>();
+                try{
+                    Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
+                    for(int i = 0, size = cursor.getCount(); i < size; i++){
+                        cursor.moveToPosition(i);
+                        tabs.put(cursor.getString(0),cursor.getBlob(1));
+                    }
+                    cursor.close();
+                    return tabs;
+                }finally {
+                    close();
+                }
             }
-            cursor.close();
-            return tabs;
-        }finally {
-            close();
-        }
+        };
     }
 
     public void open() throws SQLException {

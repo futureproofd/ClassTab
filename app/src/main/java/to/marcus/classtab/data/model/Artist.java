@@ -2,7 +2,7 @@ package to.marcus.classtab.data.model;
 
 /**
  * Created by marcus on 6/24/2016
- * Model
+ * Artist Model
  */
 public class Artist {
     private String id;

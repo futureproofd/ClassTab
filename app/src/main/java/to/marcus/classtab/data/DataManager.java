@@ -1,15 +1,14 @@
 package to.marcus.classtab.data;
 
-
-import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
-import to.marcus.classtab.ClassTabApplication;
+import rx.Observable;
+import rx.Subscriber;
 import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
 
@@ -19,19 +18,35 @@ import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
  * Manages data sources (Local and Remote) asynchronously
  */
 public class DataManager {
-    private final Context mContext;
     private TabRepositoryHelperImpl tabRepositoryHelper;
 
     @Inject
-    public DataManager(Application application, TabRepositoryHelperImpl tabRepositoryHelper){
-        this.mContext = application;
+    public DataManager(TabRepositoryHelperImpl tabRepositoryHelper){
         this.tabRepositoryHelper = tabRepositoryHelper;
     }
 
-    public void doSomething(){
-        //TabRepositoryHelperImpl tabRepositoryHelper = new TabRepositoryHelperImpl(mContext);
-        HashMap<String,byte[]> tabs = new HashMap<>();
-        tabs = tabRepositoryHelper.query(new AllTabsQuery());
-        Log.i("DATAMANAGER", "Did something");
+    public Observable<HashMap<String,byte[]>> getTabs(){
+        return makeObservable(tabRepositoryHelper.query(new AllTabsQuery()));
+    }
+
+    /**
+     * Creates an observable from a RepositoryHelper SQL Query
+     * @param func takes a SQL query callable from a RepositoryHelper implementation
+     * @param <T> HashMap<K,V>
+     * @return an Observable
+     */
+    private static <T> Observable<T> makeObservable(final Callable<T> func){
+        return Observable.create(
+                new Observable.OnSubscribe<T>() {
+                    @Override
+                    public void call(Subscriber<? super T> subscriber) {
+                        try{
+                           subscriber.onNext(func.call());
+                        }catch (Exception e){
+                            Log.e("TEST", "Error getting database records: ",e);
+                        }
+                    }
+                }
+        );
     }
 }

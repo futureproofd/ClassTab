@@ -1,6 +1,9 @@
 package to.marcus.classtab.ui;
 
 import android.os.Bundle;
+import android.util.Log;
+
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -22,7 +25,7 @@ public class HomeActivity extends BaseActivity implements MainView {
         getPresenter();
         setContentView(R.layout.activity_home);
         mHomePresenterImpl.attachView(this);
-        mHomePresenterImpl.doSomething();
+        mHomePresenterImpl.loadTabs();
     }
 
     protected HomePresenterImpl getPresenter(){
@@ -36,11 +39,12 @@ public class HomeActivity extends BaseActivity implements MainView {
         return mHomePresenterImpl;
     }
 
-    /*
-    MVP View implementation
-    */
+    /**
+     * MVP View Implementation(s)
+     */
     @Override
-    public void getArtists() {
-
+    public void showTabs(HashMap<String,byte[]> tabs){
+        //// TODO: 7/8/2016 recycler adapter receives tabs
+         Log.i("HOME", "size:"+tabs.size());
     }
 }

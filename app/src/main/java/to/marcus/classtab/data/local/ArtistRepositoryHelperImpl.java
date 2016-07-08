@@ -18,7 +18,7 @@ import to.marcus.classtab.data.model.Artist;
 /**
  * Created by marcus on 6/24/2016
  */
-public class ArtistRepositoryHelperImpl implements RepositoryHelper {
+public class ArtistRepositoryHelperImpl{
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
     private String[] allColumns = {"Id, Name"};
@@ -55,7 +55,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         close();
     }
 
-    @Override
+
     public HashMap<String,String> query(SQLStatement sqlStatement) {
         open();
         HashMap<String, String> artists = new HashMap<>();
