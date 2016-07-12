@@ -12,11 +12,13 @@ public class ClassTabDB {
         public static final String TABLE_NAME = "artist";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_DATE = "date";
 
         public static final String TABLE_CREATE = "create table "
                 +TABLE_NAME +"("
                 +COLUMN_ID+" text primary key, "
-                +COLUMN_NAME+" text not null);";
+                +COLUMN_NAME+" text not null, "
+                +COLUMN_DATE+" text);";
     }
 
     public abstract static class VideoTable{
@@ -34,11 +36,13 @@ public class ClassTabDB {
         public static final String TABLE_NAME = "tab";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_FILE = "file";
+        public static final String COLUMN_NAME = "name";
 
         public static final String TABLE_CREATE = "create table "
                 +TABLE_NAME +"("
                 +COLUMN_ID+" text primary key, "
-                +COLUMN_FILE+" BLOB not null);";
+                +COLUMN_FILE+" BLOB not null, "
+                +COLUMN_NAME+ " text);";
     }
 
     public abstract static class SoundTable{
@@ -52,6 +56,7 @@ public class ClassTabDB {
                 +COLUMN_NAME+" text not null);";
     }
 
+    /*
     public abstract static class SongTable{
         public static final String TABLE_NAME = "song";
         public static final String COLUMN_ID = "id";
@@ -62,4 +67,5 @@ public class ClassTabDB {
                 +COLUMN_ID+" text primary key, "
                 +COLUMN_NAME+" text not null);";
     }
+    */
 }

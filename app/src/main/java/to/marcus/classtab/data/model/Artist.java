@@ -4,9 +4,10 @@ package to.marcus.classtab.data.model;
  * Created by marcus on 6/24/2016
  * Artist Model
  */
-public class Artist {
+public class Artist{
     private String id;
     private String name;
+    private String date;
 
     public Artist(String id, String name){
         this.name = name;
@@ -28,11 +29,4 @@ public class Artist {
     public void setId(String id) {
         this.id = id;
     }
-
-    //test
-    @Override
-    public String toString(){
-        return name;
-    }
-
 }

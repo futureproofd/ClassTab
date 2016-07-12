@@ -1,5 +1,6 @@
 package to.marcus.classtab;
 
+import android.app.Application;
 import android.content.Context;
 
 import org.jsoup.Jsoup;
@@ -22,9 +23,9 @@ public class WebParser {
     private static final String ARTISTS_INDEX = "div[class=artists]";
     private static final String ARTIST_ELEMENT = "div[class=artist_";
     private static final String RECORD_SONG = "song";
-    private Context mContext;
+    private Application mContext;
 
-    public WebParser(Context context){
+    public WebParser(Application context){
         this.mContext = context;
     }
 
@@ -36,7 +37,9 @@ public class WebParser {
         InputStream inputStream;
         Document document;
         HashMap<String,String> artistMap = new HashMap<>();
+        HashMap<String,String> artistDateMap = new HashMap<>();
         HashMap<String,String> songMap = new HashMap<>();
+        HashMap<String,String> songTitleMap = new HashMap<>();
         HashMap<String,String> midiMap = new HashMap<>();
         HashMap<String,String> vidMap = new HashMap<>();
         int artistCount = 0;
@@ -51,7 +54,9 @@ public class WebParser {
                     //get artist list
                     for (Element artist : e.select("ul")) {
                         for (Element title : artist.select("b")) {
+                            //artist name and date
                             artistMap.put(indexLetter + String.valueOf(artistCount), title.text());
+                            artistDateMap.put(indexLetter+String.valueOf(artistCount), artist.textNodes().get(1).text());
                             break;
                         }
                         while (artistCount < artistMap.size()) {
@@ -74,7 +79,7 @@ public class WebParser {
                                                 idKey = generateUID(indexLetter, artistCount);
                                             }
                                             songMap.put(idKey, links.get(i).attr("href"));
-                                            //// TODO: 6/29/2016 add a songTitleMap
+                                            songTitleMap.put(idKey, links.get(i).childNode(0).toString());
                                             recordType = "";
                                         } else if (links.get(i).toString().contains("MIDI")) {
                                             midiMap.put(idKey, links.get(i).attr("href"));
@@ -92,20 +97,21 @@ public class WebParser {
         }catch(IOException exception){
             exception.printStackTrace();
         }
+        String str = "stop";
 
         /*
-        //// TODO: 7/8/2016 Re-use these for bootstrap process 
+        //// TODO: 7/8/2016 Re-use these for bootstrap process
         ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(mContext);
         artistRepositoryHelperImpl.populateArtists(artistMap);
-        HashMap<String,String> artists = new HashMap<>();
-        artists =  artistRepositoryHelperImpl.query(new AllArtistsQuery());
-        */
-        /*works but only needs to run once!
+        artistRepositoryHelperImpl.populateArtistsDates(artistDateMap);
+    */
+       //works but only needs to run once!
+        /*
         TabRepositoryHelperImpl tabRepositoryHelperImpl = new TabRepositoryHelperImpl(this);
         tabRepositoryHelperImpl.populateTabs(songMap);
         HashMap<String,byte[]> tabs = new HashMap<>();
         tabs = tabRepositoryHelperImpl.query(new AllTabsQuery());
-        */
+*/
     }
 
     private static String generateUID(char alphaIndex, int recordPtr){

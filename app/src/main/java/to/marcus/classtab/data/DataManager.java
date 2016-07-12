@@ -3,6 +3,7 @@ package to.marcus.classtab.data;
 import android.util.Log;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
@@ -34,7 +35,7 @@ public class DataManager {
         return makeObservable(tabRepositoryHelper.query(new AllTabsQuery()));
     }
 
-    public Observable<HashMap<String,String>> getArtists(){
+    public Observable<LinkedHashMap<String,String>> getArtists(){
         return makeObservable(artistRepositoryHelper.query(new AllArtistsQuery()));
     }
 

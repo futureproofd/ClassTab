@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -62,19 +63,37 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         close();
     }
 
+    public void populateArtistsDates(HashMap<String,String> artistDateMap){
+        ContentValues values = new ContentValues();
+        Iterator it = artistDateMap.entrySet().iterator();
+        open();
+        while (it.hasNext()){
+            database.beginTransaction();
+            Map.Entry pair = (Map.Entry)it.next();
+            values.put(ClassTabDB.ArtistTable.COLUMN_DATE,(String)pair.getValue());
+            try{
+                database.update(ClassTabDB.ArtistTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
+                database.setTransactionSuccessful();
+            }finally {
+                database.endTransaction();
+            }
+        }
+        close();
+    }
+
     /**
      * RepositoryHelper implementation to get a Database recordset
      * @param sqlStatement A raw, parameterized SQL query
      * @return Callable for an Observable
      */
     @Override
-    public Callable<HashMap<String,String>> query(SQLStatement sqlStatement) {
+    public Callable<LinkedHashMap<String,String>> query(SQLStatement sqlStatement) {
         final String SQLQuery = sqlStatement.sqlQuery();
-        return new Callable<HashMap<String, String>>() {
+        return new Callable<LinkedHashMap<String, String>>() {
             @Override
-            public HashMap<String, String> call() throws Exception {
+            public LinkedHashMap<String, String> call() throws Exception {
                 open();
-                HashMap<String, String> artists = new HashMap<>();
+                LinkedHashMap<String, String> artists = new LinkedHashMap<>();
                 try{
                     Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
                     for(int i = 0, size = cursor.getCount(); i < size; i++){

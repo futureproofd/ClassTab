@@ -88,6 +88,24 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         close();
     }
 
+    public void populateTabTitles(HashMap<String,String> songTitles){
+        ContentValues values = new ContentValues();
+        Iterator it = songTitles.entrySet().iterator();
+        open();
+        while (it.hasNext()){
+            database.beginTransaction();
+            Map.Entry pair = (Map.Entry)it.next();
+            values.put(ClassTabDB.TabTable.COLUMN_NAME,(String)pair.getValue());
+            try{
+                database.update(ClassTabDB.TabTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
+                database.setTransactionSuccessful();
+            }finally {
+                database.endTransaction();
+            }
+        }
+        close();
+    }
+
     private byte[] readAsset(String fileName){
         try{
             InputStream inputStream = mContext.getAssets().open("tabs/"+fileName);
