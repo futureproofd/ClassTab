@@ -6,10 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +30,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     @Override
     public void onBindViewHolder(ArtistsAdapter.ArtistsViewHolder holder, int position) {
         holder.artistNameView.setText(mArtists.get(position).getName());
+        holder.artistDateView.setText(mArtists.get(position).getDate());
     }
 
     @Override
@@ -47,7 +45,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     class ArtistsViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.txt_artist_name)TextView artistNameView;
-        @BindView(R.id.txt_artist_id) TextView artistIdView;
+        @BindView(R.id.txt_artist_date) TextView artistDateView;
         public ArtistsViewHolder(View view){
             super(view);
             ButterKnife.bind(this, view);

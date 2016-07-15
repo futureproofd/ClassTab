@@ -56,16 +56,17 @@ public class ClassTabDB {
                 +COLUMN_NAME+" text not null);";
     }
 
-    /*
-    public abstract static class SongTable{
-        public static final String TABLE_NAME = "song";
+    public abstract static class PhotoTable{
+        public static final String TABLE_NAME = "photo";
         public static final String COLUMN_ID = "id";
-        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_NAME = "encodedName";
+        public static final String COLUMN_URL = "url";
 
         public static final String TABLE_CREATE = "create table "
                 +TABLE_NAME +"("
                 +COLUMN_ID+" text primary key, "
-                +COLUMN_NAME+" text not null);";
+                +COLUMN_NAME+" text, "
+                +COLUMN_URL+ " text not null);";
     }
-    */
+
 }

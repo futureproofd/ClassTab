@@ -11,7 +11,7 @@ import to.marcus.classtab.injection.module.ApplicationModule;
  * Created by marcus on 6/29/2016
  */
 public class ClassTabApplication extends Application {
-    //// TODO: 7/8/2016 initiate bootstrap DB build process here - reuse version check code
+
     private static ApplicationComponent sApplicationComponent;
 
     @Override
@@ -22,8 +22,9 @@ public class ClassTabApplication extends Application {
                     .applicationModule(new ApplicationModule(this))
                     .build();
         }
-        WebParser parser = new WebParser(this);
-        parser.InitDB();
+        //// TODO: 7/8/2016 initiate bootstrap DB build process here - reuse version check code
+        //WebParser parser = new WebParser(this);
+       // parser.InitDB();
     }
 
     public static ClassTabApplication get(Context context){

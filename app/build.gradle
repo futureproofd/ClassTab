@@ -24,14 +24,23 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'org.jsoup:jsoup:1.8.1'
+    //injection
     apt 'com.google.dagger:dagger-compiler:2.0'
-    compile 'com.jakewharton:butterknife:8.2.0'
-    apt 'com.jakewharton:butterknife-compiler:8.2.0'
     compile 'com.google.dagger:dagger:2.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    //RX
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
+    //for retrofit
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    //butterknife
+    compile 'com.jakewharton:butterknife:8.2.0'
+    apt 'com.jakewharton:butterknife-compiler:8.2.0'
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

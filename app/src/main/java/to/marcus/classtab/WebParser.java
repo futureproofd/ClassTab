@@ -97,8 +97,6 @@ public class WebParser {
         }catch(IOException exception){
             exception.printStackTrace();
         }
-        String str = "stop";
-
         /*
         //// TODO: 7/8/2016 Re-use these for bootstrap process
         ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(mContext);
