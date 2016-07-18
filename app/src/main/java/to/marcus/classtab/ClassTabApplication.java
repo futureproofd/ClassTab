@@ -23,7 +23,7 @@ public class ClassTabApplication extends Application {
                     .build();
         }
         //// TODO: 7/8/2016 initiate bootstrap DB build process here - reuse version check code
-        //WebParser parser = new WebParser(this);
+       // WebParser parser = new WebParser(this);
        // parser.InitDB();
     }
 

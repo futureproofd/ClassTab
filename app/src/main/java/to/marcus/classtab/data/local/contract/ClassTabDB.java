@@ -66,7 +66,7 @@ public class ClassTabDB {
                 +TABLE_NAME +"("
                 +COLUMN_ID+" text primary key, "
                 +COLUMN_NAME+" text, "
-                +COLUMN_URL+ " text not null);";
+                +COLUMN_URL+ " text);";
     }
 
 }

@@ -100,9 +100,9 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
                     for(int i = 0, size = cursor.getCount(); i < size; i++){
                         cursor.moveToPosition(i);
                         JSONObject rowObject = new JSONObject();
-                        rowObject.put(cursor.getColumnName(0),cursor.getString(0));
-                        rowObject.put(cursor.getColumnName(1),cursor.getString(1));
-                        rowObject.put(cursor.getColumnName(2),cursor.getString(2));
+                        for(int p = 0; p< cursor.getColumnCount(); p++){
+                            rowObject.put(cursor.getColumnName(p),cursor.getString(p));
+                        }
                         resultSet.put(rowObject);
                     }
                     cursor.close();

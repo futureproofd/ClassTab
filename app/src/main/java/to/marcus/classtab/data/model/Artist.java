@@ -11,11 +11,15 @@ public class Artist{
     private String id;
     private String name;
     private String date;
+    private String url;
+    private String encodedName;
 
     public Artist(JSONObject json) throws JSONException{
         this.name = json.getString("name");
         this.id = json.getString("id");
         this.date = json.getString("date");
+        this.url = json.getString("url");
+        this.encodedName = json.getString("encodedName");
     }
 
     public String getName() {
@@ -40,5 +44,22 @@ public class Artist{
 
     public void setDate(String date){
         this.date = date;
+    }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getEncodedName() {
+        return encodedName;
+    }
+
+    public void setEncodedName(String encodedName) {
+        this.encodedName = encodedName;
     }
 }

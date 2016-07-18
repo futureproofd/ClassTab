@@ -18,10 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import to.marcus.classtab.data.local.ArtistRepositoryHelperImpl;
+import to.marcus.classtab.data.local.PhotoRepositoryHelperImpl;
 import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllArtistsByIndexAQuery;
+import to.marcus.classtab.data.local.contract.query.AllArtistsWithPhotosQuery;
+import to.marcus.classtab.data.local.contract.query.AllPhotosQuery;
 import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
-import to.marcus.classtab.data.model.Photo;
 import to.marcus.classtab.data.model.Photos;
 import to.marcus.classtab.data.remote.GoogleImageAPI;
 
@@ -33,12 +35,15 @@ import to.marcus.classtab.data.remote.GoogleImageAPI;
 public class DataManager {
     private TabRepositoryHelperImpl tabRepositoryHelper;
     private ArtistRepositoryHelperImpl artistRepositoryHelper;
+    private PhotoRepositoryHelperImpl photoRepositoryHelper;
 
     @Inject
     public DataManager(TabRepositoryHelperImpl tabRepositoryHelper
-            ,ArtistRepositoryHelperImpl artistRepositoryHelper){
+            ,ArtistRepositoryHelperImpl artistRepositoryHelper
+            ,PhotoRepositoryHelperImpl photoRepositoryHelper){
         this.tabRepositoryHelper = tabRepositoryHelper;
         this.artistRepositoryHelper = artistRepositoryHelper;
+        this.photoRepositoryHelper = photoRepositoryHelper;
     }
 
     public Observable<HashMap<String,byte[]>> getTabs(){
@@ -47,6 +52,14 @@ public class DataManager {
 
     public Observable<JSONArray> getArtists(){
         return makeObservable(artistRepositoryHelper.query(new AllArtistsByIndexAQuery()));
+    }
+
+    public Observable<JSONArray> getArtistsWithPhotos(){
+        return makeObservable(artistRepositoryHelper.query(new AllArtistsWithPhotosQuery()));
+    }
+
+    public Observable<JSONArray> getPhotos(){
+        return makeObservable(photoRepositoryHelper.query(new AllPhotosQuery()));
     }
 
     /**
@@ -85,21 +98,20 @@ public class DataManager {
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
             artistName = (String)pair.getValue();
-            //// TODO: 7/14/2016 update Photos DB with artist Id and URL encoded name
+            // TODO: 7/18/2016   make async
+            photoRepositoryHelper.populatePhotoNameAndId(artistRecord);
+
         }
         return googleImageAPI.loadPhotos(artistName);
     }
 
     /*
-    Receives result of Rx Subscription one result at a time
-    Updates Photo table with result Id corresponding to Artist table
+    Receives result of Rx Subscription, combined List
+    Updates Photo table with result Ids corresponding to Artist table
      */
-    public void savePhotos(List<Photos> data){
-        for(Photos p : data){
-            List<Photo> photos = p.getItems();
-            //// TODO: 7/14/2016 update url property of photos DB for last item in list (position(photos.size-1)) Where url encoded name = phototabe url encoded name
-            //make observable from callable function
-        }
+    public void savePhotoURL(List<Photos> data) {
+        //// TODO: 7/18/2016 make async 
+        photoRepositoryHelper.populatePhotoURL(data);
     }
 
 }

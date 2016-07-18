@@ -4,32 +4,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import to.marcus.classtab.ClassTabApplication;
 import to.marcus.classtab.R;
-import to.marcus.classtab.data.local.contract.ClassTabDB;
 import to.marcus.classtab.data.model.Artist;
-import to.marcus.classtab.data.model.Photo;
-import to.marcus.classtab.data.model.Photos;
-import to.marcus.classtab.data.remote.GoogleImageAPI;
+
 import to.marcus.classtab.injection.component.DaggerPresenterComponent;
 import to.marcus.classtab.injection.module.PresenterModule;
 import to.marcus.classtab.ui.control.HomePresenterImpl;
@@ -51,9 +36,10 @@ public class HomeActivity extends BaseActivity implements MainView{
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         mHomePresenterImpl.attachView(this);
-       // mHomePresenterImpl.loadTabs();
-        mHomePresenterImpl.loadArtists();
-        doRetroFitStuff();
+       // mHomePresenterImpl.loadTabs(); //boot-strap
+       // mHomePresenterImpl.loadArtists();
+        //mHomePresenterImpl.downloadPhotos(); boot-strap
+        mHomePresenterImpl.loadArtistsWithPhotos();
     }
 
     protected HomePresenterImpl getPresenter(){
@@ -75,24 +61,6 @@ public class HomeActivity extends BaseActivity implements MainView{
             mRecyclerView.setAdapter(mArtistsAdapter);
         }
     }
-
-    private void doRetroFitStuff(){
-        /*
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://www.googleapis.com/customsearch/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        GoogleImageAPI googleImageAPI = retrofit.create(GoogleImageAPI.class);
-
-        Call<Photos> call = googleImageAPI.loadPhotos("sergio+assad");
-        call.enqueue(this);
-        */
-        mHomePresenterImpl.getPhotos();
-    }
-
 
     /**
      * MVP View Implementation(s)

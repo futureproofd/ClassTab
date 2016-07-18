@@ -1,10 +1,14 @@
 package to.marcus.classtab.ui;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.LinkedHashMap;
 
@@ -31,6 +35,9 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     public void onBindViewHolder(ArtistsAdapter.ArtistsViewHolder holder, int position) {
         holder.artistNameView.setText(mArtists.get(position).getName());
         holder.artistDateView.setText(mArtists.get(position).getDate());
+        Context context = holder.artistImageView.getContext();
+        Picasso.with(context).load(mArtists.get(position).getUrl())
+                .into(holder.artistImageView);
     }
 
     @Override
@@ -46,6 +53,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
 
         @BindView(R.id.txt_artist_name)TextView artistNameView;
         @BindView(R.id.txt_artist_date) TextView artistDateView;
+        @BindView(R.id.img_artist) ImageView artistImageView;
         public ArtistsViewHolder(View view){
             super(view);
             ButterKnife.bind(this, view);

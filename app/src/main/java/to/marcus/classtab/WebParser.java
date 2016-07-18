@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 import to.marcus.classtab.data.local.ArtistRepositoryHelperImpl;
+import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllArtistsQuery;
+import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
 
 /**
  * Created by marcus on 6/17/2016
@@ -97,12 +99,13 @@ public class WebParser {
         }catch(IOException exception){
             exception.printStackTrace();
         }
-        /*
-        //// TODO: 7/8/2016 Re-use these for bootstrap process
+
+        //// TODO: 7/8/2016 Re-use these for one-time bootstrap process
+
         ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(mContext);
         artistRepositoryHelperImpl.populateArtists(artistMap);
         artistRepositoryHelperImpl.populateArtistsDates(artistDateMap);
-    */
+
        //works but only needs to run once!
         /*
         TabRepositoryHelperImpl tabRepositoryHelperImpl = new TabRepositoryHelperImpl(this);

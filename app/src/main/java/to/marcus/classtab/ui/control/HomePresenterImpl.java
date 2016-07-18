@@ -5,7 +5,6 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -58,12 +57,36 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
             });
     }
 
+    public void loadArtistsWithPhotos(){
+        mDataManager.getArtistsWithPhotos()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<JSONArray>() {
+                    @Override
+                    public void call(JSONArray artists) {
+                        getView().showArtists(presentArtists(artists));
+                    }
+                });
+    }
+
+    public void loadPhotos(){
+        mDataManager.getPhotos()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<JSONArray>() {
+                    @Override
+                    public void call(JSONArray photos) {
+                        Log.i(TAG, "test");
+                    }
+                });
+    }
+
     /**
      * Gets a JSON list of artists, creates an observable LinkedHashmap
      * uses map to iterate over artists, extract name, flatmap each individual name
      * to google API. Return combined resultSet to dataManager for saving
      */
-    public void getPhotos(){
+    public void downloadPhotos(){
         mDataManager.getArtists()
             .subscribeOn(Schedulers.io())
             .subscribe(new Action1<JSONArray>() {
@@ -76,7 +99,14 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
                            @Override
                            public HashMap<String,String> call(Artist artist) {
                                HashMap<String,String> artistRecord = new HashMap<>();
-                               artistRecord.put(artist.getId(),URLEncoder.encode(artist.getName()));
+                               //artistRecord.put(artist.getId(),URLEncoder.encode(artist.getName()));
+                               String artistName;
+                               if(artist.getName().contains("(")){
+                                   artistName = artist.getName().substring(0,artist.getName().indexOf("(")-2).replace(" ","+");
+                               }else {
+                                   artistName = artist.getName().replace(" ", "+");
+                               }
+                               artistRecord.put(artist.getId(),artistName);
                                return artistRecord;
                            }
                        })
@@ -99,7 +129,7 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
 
                             @Override
                             public void onNext(List<Photos> objects) {
-                                mDataManager.savePhotos(objects);
+                                mDataManager.savePhotoURL(objects);
                             }
                         });
                 }
