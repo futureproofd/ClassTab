@@ -33,18 +33,6 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
         this.mDataManager = dataManager;
     }
 
-    public void loadTabs(){
-        mDataManager.getTabs()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Action1<HashMap<String, byte[]>>(){
-                @Override
-                public void call(HashMap<String, byte[]> tabs) {
-                    getView().showTabs(tabs);
-                }
-            });
-    }
-
     public void loadArtists(){
         mDataManager.getArtists()
             .subscribeOn(Schedulers.io())
@@ -106,7 +94,7 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
                                }else {
                                    artistName = artist.getName().replace(" ", "+");
                                }
-                               artistRecord.put(artist.getId(),artistName);
+                               artistRecord.put(artist.getId(),artistName+"+composer");
                                return artistRecord;
                            }
                        })
@@ -136,17 +124,6 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
             });
     }
 
-    @Override
-    public void attachView(MainView mainView){
-        super.attachView(mainView);
-    }
-
-    @Override
-    public void detachView(){
-        super.detachView();
-        //do other stuff
-    }
-
     private LinkedHashMap<Integer,Artist> presentArtists(JSONArray artists){
         LinkedHashMap<Integer,Artist> mArtists = new LinkedHashMap<>();
         for(int i = 0; i < artists.length(); i++){
@@ -158,4 +135,16 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
         }
         return mArtists;
     }
+
+    @Override
+    public void attachView(MainView mainView){
+        super.attachView(mainView);
+    }
+
+    @Override
+    public void detachView(){
+        super.detachView();
+        //do other stuff
+    }
+
 }

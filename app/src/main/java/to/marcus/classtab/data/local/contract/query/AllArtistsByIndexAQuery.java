@@ -9,7 +9,7 @@ import to.marcus.classtab.data.local.contract.SQLStatement;
 public class AllArtistsByIndexAQuery implements SQLStatement {
     @Override
     public String sqlQuery() {
-        return String.format("SELECT * FROM %1s WHERE %2s LIKE %3s LIMIT 2;",
+        return String.format("SELECT * FROM %1s WHERE %2s LIKE %3s;",
                 ClassTabDB.ArtistTable.TABLE_NAME
                 ,ClassTabDB.ArtistTable.COLUMN_ID
                 ,"'A%'"

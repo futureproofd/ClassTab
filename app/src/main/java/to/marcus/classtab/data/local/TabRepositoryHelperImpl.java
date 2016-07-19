@@ -6,6 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Base64;
+import android.util.Base64OutputStream;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,21 +44,24 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
      * @return Callable for an Observable
      */
     @Override
-    public Callable<HashMap<String, byte[]>> query(final SQLStatement sqlStatement) {
+    public Callable<JSONArray> query(final SQLStatement sqlStatement) {
         final String SQLQuery = sqlStatement.sqlQuery();
-        return new Callable<HashMap<String, byte[]>>() {
+        return new Callable<JSONArray>() {
             @Override
-            public HashMap<String, byte[]> call() throws Exception {
+            public JSONArray call() throws Exception {
                 open();
-                HashMap<String, byte[]> tabs = new HashMap<>();
                 try{
                     Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
+                    JSONArray resultSet = new JSONArray();
                     for(int i = 0, size = cursor.getCount(); i < size; i++){
                         cursor.moveToPosition(i);
-                        tabs.put(cursor.getString(0),cursor.getBlob(1));
+                        JSONObject rowObject = new JSONObject();
+                        String tabData = Base64.encodeToString(cursor.getBlob(1),Base64.DEFAULT);
+                        rowObject.put(cursor.getColumnName(0),tabData);
+                        resultSet.put(rowObject);
                     }
                     cursor.close();
-                    return tabs;
+                    return resultSet;
                 }finally {
                     close();
                 }

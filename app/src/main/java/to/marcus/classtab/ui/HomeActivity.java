@@ -3,9 +3,7 @@ package to.marcus.classtab.ui;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import javax.inject.Inject;
 
@@ -21,7 +19,6 @@ import to.marcus.classtab.ui.control.HomePresenterImpl;
 import to.marcus.classtab.ui.control.MainView;
 
 public class HomeActivity extends BaseActivity implements MainView{
-
     private static final String TAG = HomeActivity.class.getSimpleName();
     private ArtistsAdapter mArtistsAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -37,9 +34,9 @@ public class HomeActivity extends BaseActivity implements MainView{
         ButterKnife.bind(this);
         mHomePresenterImpl.attachView(this);
        // mHomePresenterImpl.loadTabs(); //boot-strap
-       // mHomePresenterImpl.loadArtists();
-        //mHomePresenterImpl.downloadPhotos(); boot-strap
-        mHomePresenterImpl.loadArtistsWithPhotos();
+        //mHomePresenterImpl.loadArtists(); //1. load artists
+        //mHomePresenterImpl.downloadPhotos(); //boot-strap
+        mHomePresenterImpl.loadArtistsWithPhotos(); //2.
     }
 
     protected HomePresenterImpl getPresenter(){
@@ -65,12 +62,6 @@ public class HomeActivity extends BaseActivity implements MainView{
     /**
      * MVP View Implementation(s)
      */
-    @Override
-    public void showTabs(HashMap<String,byte[]> tabs){
-        //// TODO: 7/8/2016 recycler adapter receives tabs
-         Log.i(TAG, "size:"+tabs.size());
-    }
-
     @Override
     public void showArtists(LinkedHashMap<Integer, Artist> artists){
         initRecyclerAdapter();

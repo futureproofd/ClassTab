@@ -23,6 +23,7 @@ import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllArtistsByIndexAQuery;
 import to.marcus.classtab.data.local.contract.query.AllArtistsWithPhotosQuery;
 import to.marcus.classtab.data.local.contract.query.AllPhotosQuery;
+import to.marcus.classtab.data.local.contract.query.AllTabsByIndexAQuery;
 import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
 import to.marcus.classtab.data.model.Photos;
 import to.marcus.classtab.data.remote.GoogleImageAPI;
@@ -46,8 +47,8 @@ public class DataManager {
         this.photoRepositoryHelper = photoRepositoryHelper;
     }
 
-    public Observable<HashMap<String,byte[]>> getTabs(){
-        return makeObservable(tabRepositoryHelper.query(new AllTabsQuery()));
+    public Observable<JSONArray> getTabs(){
+        return makeObservable(tabRepositoryHelper.query(new AllTabsByIndexAQuery()));
     }
 
     public Observable<JSONArray> getArtists(){

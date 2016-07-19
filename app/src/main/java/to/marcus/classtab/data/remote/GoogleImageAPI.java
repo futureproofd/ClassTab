@@ -13,6 +13,6 @@ import to.marcus.classtab.data.model.Photos;
  * Define endpoints
  */
 public interface GoogleImageAPI {
-    @GET("v1?key=AIzaSyCKHoqK_ofLeaoRjsT7lNYeXOVjGKubpjE&cx=008509658288434337533:wweu7ml6wic&searchType=image&fileType=jpg&imgSize=large&alt=json")
+    @GET("v1?key=AIzaSyCKHoqK_ofLeaoRjsT7lNYeXOVjGKubpjE&cx=008509658288434337533:wweu7ml6wic&searchType=image&fileType=jpg&imgSize=large&imgType=face&alt=json")
     Observable<Photos> loadPhotos(@Query("q") String artistQuery);
 }

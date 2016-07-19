@@ -18,8 +18,16 @@ public class Artist{
         this.name = json.getString("name");
         this.id = json.getString("id");
         this.date = json.getString("date");
-        this.url = json.getString("url");
-        this.encodedName = json.getString("encodedName");
+        if(!json.has("url") || json.isNull("url")){
+            this.url = "www.placeholder.com";
+        }else{
+            this.url = json.getString("url");
+        }
+        if(!json.has("encodedName") || json.isNull("encodedName")){
+            this.encodedName = "";
+        }else{
+            this.encodedName = json.getString("encodedName");
+        }
     }
 
     public String getName() {
