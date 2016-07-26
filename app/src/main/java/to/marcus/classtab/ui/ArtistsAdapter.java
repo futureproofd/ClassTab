@@ -23,12 +23,24 @@ import to.marcus.classtab.data.model.Artist;
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsViewHolder>{
 
     private LinkedHashMap<Integer,Artist> mArtists;
+    private final RecyclerViewArtistClickListener clickListener;
+
+    public ArtistsAdapter(RecyclerViewArtistClickListener listener){
+        this.clickListener = listener;
+    }
 
     @Override
     public ArtistsAdapter.ArtistsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View artistView = LayoutInflater.from(parent.getContext())
+        final View artistView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_artist,parent,false);
-        return new ArtistsViewHolder(artistView);
+        final ArtistsViewHolder artistsViewHolder = new ArtistsViewHolder(artistView);
+        artistView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                clickListener.onObjectClick(v,mArtists.get(artistsViewHolder.getAdapterPosition()).getId());
+            }
+        });
+        return artistsViewHolder;
     }
 
     @Override

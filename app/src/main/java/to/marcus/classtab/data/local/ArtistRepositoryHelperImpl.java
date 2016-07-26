@@ -88,8 +88,8 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
      * @return Callable for an Observable
      */
     @Override
-    public Callable<JSONArray> query(SQLStatement sqlStatement) {
-        final String SQLQuery = sqlStatement.sqlQuery();
+    public Callable<JSONArray> query(SQLStatement sqlStatement, String params) {
+        final String SQLQuery = sqlStatement.sqlQuery(params);
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {

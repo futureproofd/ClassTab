@@ -3,6 +3,8 @@ package to.marcus.classtab;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.stetho.Stetho;
+
 import to.marcus.classtab.injection.component.ApplicationComponent;
 import to.marcus.classtab.injection.component.DaggerApplicationComponent;
 import to.marcus.classtab.injection.module.ApplicationModule;
@@ -25,6 +27,7 @@ public class ClassTabApplication extends Application {
         //// TODO: 7/8/2016 initiate bootstrap DB build process here - reuse version check code
         //WebParser parser = new WebParser(this); //1 - load artists
         //parser.InitDB();
+        Stetho.initializeWithDefaults(this);
     }
 
     public static ClassTabApplication get(Context context){

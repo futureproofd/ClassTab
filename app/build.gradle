@@ -43,4 +43,6 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.2.0'
     //Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
+    //Stetho
+    compile 'com.facebook.stetho:stetho:1.3.1'
 }

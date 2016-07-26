@@ -6,8 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Base64;
-import android.util.Base64OutputStream;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
 import to.marcus.classtab.data.local.contract.SQLStatement;
+import to.marcus.classtab.util.StringUtils;
 
 /**
  * Created by marcus on 6/30/2016
@@ -44,8 +46,8 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
      * @return Callable for an Observable
      */
     @Override
-    public Callable<JSONArray> query(final SQLStatement sqlStatement) {
-        final String SQLQuery = sqlStatement.sqlQuery();
+    public Callable<JSONArray> query(final SQLStatement sqlStatement, String params) {
+        final String SQLQuery = sqlStatement.sqlQuery(params);
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
@@ -57,7 +59,9 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
                         cursor.moveToPosition(i);
                         JSONObject rowObject = new JSONObject();
                         String tabData = Base64.encodeToString(cursor.getBlob(1),Base64.DEFAULT);
-                        rowObject.put(cursor.getColumnName(0),tabData);
+                        rowObject.put(cursor.getColumnName(0),cursor.getString(0));
+                        rowObject.put(cursor.getColumnName(1),tabData);
+                        rowObject.put(cursor.getColumnName(2),cursor.getString(2));
                         resultSet.put(rowObject);
                     }
                     cursor.close();
@@ -77,6 +81,9 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         dbHelper.close();
     }
 
+    /*
+    Bootstrap methods
+     */
     public void populateTabs(HashMap<String,String> tabsMap){
         ContentValues values = new ContentValues();
         Iterator it = tabsMap.entrySet().iterator();
@@ -85,7 +92,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
             database.beginTransaction();
             Map.Entry pair = (Map.Entry)it.next();
             values.put(ClassTabDB.TabTable.COLUMN_ID,(String)pair.getKey());
-            values.put(ClassTabDB.TabTable.COLUMN_FILE,readAsset((String)pair.getValue()));
+            values.put(ClassTabDB.TabTable.COLUMN_FILE,readFromAsset((String)pair.getValue()));
             try{
                 database.insert(ClassTabDB.TabTable.TABLE_NAME, null, values);
                 database.setTransactionSuccessful();
@@ -96,6 +103,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         close();
     }
 
+    //// TODO: 7/20/2016 find out why name isn't updating
     public void populateTabTitles(HashMap<String,String> songTitles){
         ContentValues values = new ContentValues();
         Iterator it = songTitles.entrySet().iterator();
@@ -103,10 +111,15 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         while (it.hasNext()){
             database.beginTransaction();
             Map.Entry pair = (Map.Entry)it.next();
-            values.put(ClassTabDB.TabTable.COLUMN_NAME,(String)pair.getValue());
-            try{
+            //String formattedTitle = StringUtils.escapeSpecialChars((String)pair.getValue(),true);
+            String formattedTitle = pair.getValue().toString().replaceAll("\"","");
+            formattedTitle.replaceAll("\'","");
+            values.put(ClassTabDB.TabTable.COLUMN_NAME,formattedTitle);
+            try {
                 database.update(ClassTabDB.TabTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
                 database.setTransactionSuccessful();
+            }catch (SQLiteException e){
+                Log.i("TABDBHELPER: ","exception:"+e);
             }finally {
                 database.endTransaction();
             }
@@ -114,7 +127,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         close();
     }
 
-    private byte[] readAsset(String fileName){
+    private byte[] readFromAsset(String fileName){
         try{
             InputStream inputStream = mContext.getAssets().open("tabs/"+fileName);
             int size = inputStream.available();
@@ -128,4 +141,5 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
             return buffer;
         }
     }
+
 }

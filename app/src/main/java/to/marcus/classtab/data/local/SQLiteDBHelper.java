@@ -21,7 +21,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(ClassTabDB.ArtistTable.TABLE_CREATE);
-        //// TODO: 7/15/2016 reinstall and recreate phototable 
         db.execSQL(ClassTabDB.PhotoTable.TABLE_CREATE);
         db.execSQL(ClassTabDB.SoundTable.TABLE_CREATE);
         db.execSQL(ClassTabDB.VideoTable.TABLE_CREATE);

@@ -8,7 +8,7 @@ import to.marcus.classtab.data.local.contract.SQLStatement;
  */
 public class AllTabsQuery implements SQLStatement {
     @Override
-    public String sqlQuery() {
+    public String sqlQuery(String params) {
         return String.format("SELECT * FROM %1s;"
                 ,ClassTabDB.TabTable.TABLE_NAME
         );

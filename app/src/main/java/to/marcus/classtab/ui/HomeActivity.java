@@ -1,8 +1,11 @@
 package to.marcus.classtab.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import java.util.LinkedHashMap;
 import javax.inject.Inject;
@@ -18,7 +21,7 @@ import to.marcus.classtab.injection.module.PresenterModule;
 import to.marcus.classtab.ui.control.HomePresenterImpl;
 import to.marcus.classtab.ui.control.MainView;
 
-public class HomeActivity extends BaseActivity implements MainView{
+public class HomeActivity extends BaseActivity implements MainView, RecyclerViewArtistClickListener{
     private static final String TAG = HomeActivity.class.getSimpleName();
     private ArtistsAdapter mArtistsAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -54,7 +57,7 @@ public class HomeActivity extends BaseActivity implements MainView{
         if(mArtistsAdapter == null){
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mArtistsAdapter = new ArtistsAdapter();
+            mArtistsAdapter = new ArtistsAdapter(this);
             mRecyclerView.setAdapter(mArtistsAdapter);
         }
     }
@@ -69,4 +72,11 @@ public class HomeActivity extends BaseActivity implements MainView{
         mArtistsAdapter.notifyDataSetChanged();
     }
 
+    //ArtistsAdapter clickListener
+    @Override
+    public void onObjectClick(View v, String artistId) {
+        Intent intent = new Intent(this,DetailActivity.class);
+        intent.putExtra("ARTISTID",artistId);
+        this.startActivity(intent);
+    }
 }

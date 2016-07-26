@@ -1,7 +1,6 @@
 package to.marcus.classtab;
 
 import android.app.Application;
-import android.content.Context;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,9 +14,6 @@ import java.util.Random;
 
 import to.marcus.classtab.data.local.ArtistRepositoryHelperImpl;
 import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
-import to.marcus.classtab.data.local.contract.query.AllArtistsQuery;
-import to.marcus.classtab.data.local.contract.query.AllTabsByIndexAQuery;
-import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
 
 /**
  * Created by marcus on 6/17/2016
@@ -102,16 +98,15 @@ public class WebParser {
         }
 
         //// TODO: 7/8/2016 Re-use these for one-time bootstrap process
-
-        //ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(mContext);
-        //artistRepositoryHelperImpl.populateArtists(artistMap);
-        //artistRepositoryHelperImpl.populateArtistsDates(artistDateMap);
-
+/*
+        ArtistRepositoryHelperImpl artistRepositoryHelperImpl = new ArtistRepositoryHelperImpl(mContext);
+        artistRepositoryHelperImpl.populateArtists(artistMap);
+        artistRepositoryHelperImpl.populateArtistsDates(artistDateMap);
+*/
        //works but only needs to run once!
         TabRepositoryHelperImpl tabRepositoryHelperImpl = new TabRepositoryHelperImpl(mContext);
-        tabRepositoryHelperImpl.populateTabs(songMap);
-       // tabs = tabRepositoryHelperImpl.query(new AllTabsByIndexAQuery());
-
+       // tabRepositoryHelperImpl.populateTabs(songMap);
+        tabRepositoryHelperImpl.populateTabTitles(songTitleMap);
     }
 
     private static String generateUID(char alphaIndex, int recordPtr){

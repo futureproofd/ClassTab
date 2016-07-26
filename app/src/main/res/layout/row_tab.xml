@@ -4,27 +4,19 @@
     android:layout_height="wrap_content"
     android:padding="10dp">
     <to.marcus.classtab.ui.custom.CircleImageView
-        android:id="@+id/img_artist"
+        android:id="@+id/img_tab"
         android:layout_width="80dp"
-        android:layout_height="80dp"/>
+        android:layout_height="80dp"
+        android:src="@android:drawable/ic_media_play"/>
     <TextView
-        android:id="@+id/txt_artist_name"
+        android:id="@+id/txt_tab_name"
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/img_artist"
+        android:layout_toRightOf="@id/img_tab"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:text="test"
-        />
-    <TextView
-        android:id="@+id/txt_artist_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_artist_name"
-        android:layout_toRightOf="@id/img_artist"
-        android:paddingLeft="10dp"
-        android:text="test2"
         />
 
 </RelativeLayout>

@@ -23,8 +23,7 @@ import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllArtistsByIndexAQuery;
 import to.marcus.classtab.data.local.contract.query.AllArtistsWithPhotosQuery;
 import to.marcus.classtab.data.local.contract.query.AllPhotosQuery;
-import to.marcus.classtab.data.local.contract.query.AllTabsByIndexAQuery;
-import to.marcus.classtab.data.local.contract.query.AllTabsQuery;
+import to.marcus.classtab.data.local.contract.query.AllTabsByArtistIdQuery;
 import to.marcus.classtab.data.model.Photos;
 import to.marcus.classtab.data.remote.GoogleImageAPI;
 
@@ -47,20 +46,20 @@ public class DataManager {
         this.photoRepositoryHelper = photoRepositoryHelper;
     }
 
-    public Observable<JSONArray> getTabs(){
-        return makeObservable(tabRepositoryHelper.query(new AllTabsByIndexAQuery()));
+    public Observable<JSONArray> getTabsByArtist(String artistId){
+        return makeObservable(tabRepositoryHelper.query(new AllTabsByArtistIdQuery(),artistId));
     }
 
     public Observable<JSONArray> getArtists(){
-        return makeObservable(artistRepositoryHelper.query(new AllArtistsByIndexAQuery()));
+        return makeObservable(artistRepositoryHelper.query(new AllArtistsByIndexAQuery(),null));
     }
 
     public Observable<JSONArray> getArtistsWithPhotos(){
-        return makeObservable(artistRepositoryHelper.query(new AllArtistsWithPhotosQuery()));
+        return makeObservable(artistRepositoryHelper.query(new AllArtistsWithPhotosQuery(),null));
     }
 
     public Observable<JSONArray> getPhotos(){
-        return makeObservable(photoRepositoryHelper.query(new AllPhotosQuery()));
+        return makeObservable(photoRepositoryHelper.query(new AllPhotosQuery(),null));
     }
 
     /**

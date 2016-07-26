@@ -8,7 +8,7 @@ import to.marcus.classtab.data.local.contract.SQLStatement;
  */
 public class AllArtistsQuery implements SQLStatement {
     @Override
-    public String sqlQuery() {
+    public String sqlQuery(String params) {
         return String.format("SELECT * FROM %1s ORDER BY id;"
                 ,ClassTabDB.ArtistTable.TABLE_NAME
         );
