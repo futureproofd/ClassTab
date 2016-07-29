@@ -17,12 +17,12 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
+import to.marcus.classtab.WebParser;
 import to.marcus.classtab.data.local.ArtistRepositoryHelperImpl;
 import to.marcus.classtab.data.local.PhotoRepositoryHelperImpl;
 import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
-import to.marcus.classtab.data.local.contract.query.AllArtistsByIndexAQuery;
+import to.marcus.classtab.data.local.contract.query.AllArtistsByLetterIndexQuery;
 import to.marcus.classtab.data.local.contract.query.AllArtistsWithPhotosQuery;
-import to.marcus.classtab.data.local.contract.query.AllPhotosQuery;
 import to.marcus.classtab.data.local.contract.query.AllTabsByArtistIdQuery;
 import to.marcus.classtab.data.model.Photos;
 import to.marcus.classtab.data.remote.GoogleImageAPI;
@@ -36,14 +36,17 @@ public class DataManager {
     private TabRepositoryHelperImpl tabRepositoryHelper;
     private ArtistRepositoryHelperImpl artistRepositoryHelper;
     private PhotoRepositoryHelperImpl photoRepositoryHelper;
+    private WebParser mWebParser;
 
     @Inject
     public DataManager(TabRepositoryHelperImpl tabRepositoryHelper
             ,ArtistRepositoryHelperImpl artistRepositoryHelper
-            ,PhotoRepositoryHelperImpl photoRepositoryHelper){
+            ,PhotoRepositoryHelperImpl photoRepositoryHelper
+            ,WebParser webParser){
         this.tabRepositoryHelper = tabRepositoryHelper;
         this.artistRepositoryHelper = artistRepositoryHelper;
         this.photoRepositoryHelper = photoRepositoryHelper;
+        this.mWebParser = webParser;
     }
 
     public Observable<JSONArray> getTabsByArtist(String artistId){
@@ -51,15 +54,27 @@ public class DataManager {
     }
 
     public Observable<JSONArray> getArtists(){
-        return makeObservable(artistRepositoryHelper.query(new AllArtistsByIndexAQuery(),null));
+        return makeObservable(artistRepositoryHelper.query(new AllArtistsByLetterIndexQuery(),null));
     }
 
     public Observable<JSONArray> getArtistsWithPhotos(){
         return makeObservable(artistRepositoryHelper.query(new AllArtistsWithPhotosQuery(),null));
     }
 
-    public Observable<JSONArray> getPhotos(){
-        return makeObservable(photoRepositoryHelper.query(new AllPhotosQuery(),null));
+    public Observable<Boolean> populateArtistsTable(){
+        return makeObservable(artistRepositoryHelper.populateArtists(mWebParser.getArtists()));
+    }
+
+    public Observable<Boolean> populateArtistDates(){
+        return makeObservable(artistRepositoryHelper.populateArtistsDates(mWebParser.getArtistDates()));
+    }
+
+    public Observable<Boolean> populateTabTable(){
+        return makeObservable(tabRepositoryHelper.populateTabs(mWebParser.getTabs()));
+    }
+
+    public Observable<Boolean> populateTabTitles(){
+        return makeObservable(tabRepositoryHelper.populateTabTitles(mWebParser.getTabTitles()));
     }
 
     /**

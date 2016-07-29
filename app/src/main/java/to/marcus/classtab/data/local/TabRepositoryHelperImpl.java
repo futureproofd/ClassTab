@@ -31,13 +31,13 @@ import to.marcus.classtab.util.StringUtils;
  */
 public class TabRepositoryHelperImpl implements RepositoryHelper{
     private SQLiteDatabase database;
-    private SQLiteDBHelper dbHelper;
+    private ClassTabDBHelper dbHelper;
     private Context mContext;
 
     @Inject
     public TabRepositoryHelperImpl(Application context){
         this.mContext = context;
-        dbHelper = new SQLiteDBHelper(context);
+        dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
     /**
@@ -84,47 +84,65 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
     /*
     Bootstrap methods
      */
-    public void populateTabs(HashMap<String,String> tabsMap){
-        ContentValues values = new ContentValues();
-        Iterator it = tabsMap.entrySet().iterator();
-        open();
-        while (it.hasNext()){
-            database.beginTransaction();
-            Map.Entry pair = (Map.Entry)it.next();
-            values.put(ClassTabDB.TabTable.COLUMN_ID,(String)pair.getKey());
-            values.put(ClassTabDB.TabTable.COLUMN_FILE,readFromAsset((String)pair.getValue()));
-            try{
-                database.insert(ClassTabDB.TabTable.TABLE_NAME, null, values);
-                database.setTransactionSuccessful();
-            }finally {
-                database.endTransaction();
+    public Callable<Boolean> populateTabs(HashMap<String,String> tabsMap){
+        final HashMap<String,String> tmpTabMap = tabsMap;
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                boolean isSuccess = false;
+                ContentValues values = new ContentValues();
+                Iterator it = tmpTabMap.entrySet().iterator();
+                open();
+                while (it.hasNext()){
+                    database.beginTransaction();
+                    Map.Entry pair = (Map.Entry)it.next();
+                    values.put(ClassTabDB.TabTable.COLUMN_ID,(String)pair.getKey());
+                    values.put(ClassTabDB.TabTable.COLUMN_FILE,readFromAsset((String)pair.getValue()));
+                    try{
+                        database.insert(ClassTabDB.TabTable.TABLE_NAME, null, values);
+                        database.setTransactionSuccessful();
+                        isSuccess = true;
+                    }finally {
+                        database.endTransaction();
+                    }
+                }
+                close();
+                return isSuccess;
             }
-        }
-        close();
+        };
     }
 
-    //// TODO: 7/20/2016 find out why name isn't updating
-    public void populateTabTitles(HashMap<String,String> songTitles){
-        ContentValues values = new ContentValues();
-        Iterator it = songTitles.entrySet().iterator();
-        open();
-        while (it.hasNext()){
-            database.beginTransaction();
-            Map.Entry pair = (Map.Entry)it.next();
-            //String formattedTitle = StringUtils.escapeSpecialChars((String)pair.getValue(),true);
-            String formattedTitle = pair.getValue().toString().replaceAll("\"","");
-            formattedTitle.replaceAll("\'","");
-            values.put(ClassTabDB.TabTable.COLUMN_NAME,formattedTitle);
-            try {
-                database.update(ClassTabDB.TabTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
-                database.setTransactionSuccessful();
-            }catch (SQLiteException e){
-                Log.i("TABDBHELPER: ","exception:"+e);
-            }finally {
-                database.endTransaction();
+    public Callable<Boolean> populateTabTitles(HashMap<String,String> tabTitles){
+        final HashMap<String,String> tmpTabTitles = tabTitles;
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                boolean isSuccess = false;
+                ContentValues values = new ContentValues();
+                Iterator it = tmpTabTitles.entrySet().iterator();
+                open();
+                while (it.hasNext()){
+                    database.beginTransaction();
+                    Map.Entry pair = (Map.Entry)it.next();
+                    String formattedTitle = StringUtils.escapeSpecialChars((String)pair.getValue(),true);
+                    //String formattedTitle = pair.getValue().toString().replaceAll("\"","");
+                    // formattedTitle.replaceAll("\'","");
+                    values.put(ClassTabDB.TabTable.COLUMN_NAME,formattedTitle);
+                    try {
+                        database.update(ClassTabDB.TabTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
+                        database.setTransactionSuccessful();
+                        isSuccess = true;
+                    }catch (SQLiteException e){
+                        Log.e("TABDBHELPER: ","exception:"+e);
+                    }finally {
+                        database.endTransaction();
+                    }
+                }
+                close();
+                return isSuccess;
             }
-        }
-        close();
+        };
+
     }
 
     private byte[] readFromAsset(String fileName){

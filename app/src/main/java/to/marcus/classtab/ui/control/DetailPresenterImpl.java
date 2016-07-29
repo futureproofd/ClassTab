@@ -9,11 +9,13 @@ import java.util.LinkedHashMap;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import to.marcus.classtab.data.DataManager;
 import to.marcus.classtab.data.model.Tab;
+import to.marcus.classtab.ui.control.base.BasePresenter;
 
 /**
  * Created by mplienegger on 7/19/2016.
@@ -21,6 +23,7 @@ import to.marcus.classtab.data.model.Tab;
 public class DetailPresenterImpl extends BasePresenter<DetailView> {
     private final String TAG = DetailPresenterImpl.class.getSimpleName();
     private final DataManager mDataManager;
+    private Subscription mSubscription;
 
     @Inject
     public DetailPresenterImpl(DataManager dataManager){
@@ -28,7 +31,7 @@ public class DetailPresenterImpl extends BasePresenter<DetailView> {
     }
 
     public void loadTabsByArtist(String artistId){
-        mDataManager.getTabsByArtist(artistId)
+        mSubscription = mDataManager.getTabsByArtist(artistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<JSONArray>(){
@@ -47,6 +50,7 @@ public class DetailPresenterImpl extends BasePresenter<DetailView> {
     @Override
     public void detachView(){
         super.detachView();
+        if(mSubscription != null)mSubscription.unsubscribe();
     }
 
     private LinkedHashMap<Integer,Tab> presentTabs(JSONArray tabs){

@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
-import org.json.JSONArray;
+import android.view.View;
 
 import java.util.LinkedHashMap;
 
@@ -41,7 +39,14 @@ public class DetailActivity extends AppCompatActivity implements DetailView, Rec
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         mDetailPresenterImpl.attachView(this);
+        initRecyclerAdapter();
         mDetailPresenterImpl.loadTabsByArtist(getIntent().getStringExtra("ARTISTID"));
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mDetailPresenterImpl.detachView();
     }
 
     protected DetailPresenterImpl getPresenter(){
@@ -66,7 +71,6 @@ public class DetailActivity extends AppCompatActivity implements DetailView, Rec
 
     @Override
     public void showTabs(LinkedHashMap<Integer,Tab> tabs) {
-        initRecyclerAdapter();
         mTabAdapter.setTabs(tabs);
         mTabAdapter.notifyDataSetChanged();
     }

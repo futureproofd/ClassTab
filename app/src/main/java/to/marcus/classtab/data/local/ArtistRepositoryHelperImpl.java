@@ -25,13 +25,13 @@ import to.marcus.classtab.data.local.contract.SQLStatement;
  */
 public class ArtistRepositoryHelperImpl implements RepositoryHelper {
     private SQLiteDatabase database;
-    private SQLiteDBHelper dbHelper;
+    private ClassTabDBHelper dbHelper;
     private Context mContext;
 
     @Inject
     public ArtistRepositoryHelperImpl(Application context){
         this.mContext = context;
-        dbHelper = new SQLiteDBHelper(context);
+        dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
     public void open() throws SQLException{
@@ -39,47 +39,69 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
     }
 
     public void close(){
-        dbHelper.close();
+        if(database != null && database.isOpen()){
+            database.close();
+        }
     }
 
     /**
      * Bootstrap processes
      */
-    public void populateArtists(HashMap<String,String> artistMap){
-        ContentValues values = new ContentValues();
-        Iterator it = artistMap.entrySet().iterator();
-        open();
-        while (it.hasNext()){
-            database.beginTransaction();
-            Map.Entry pair = (Map.Entry)it.next();
-            values.put(ClassTabDB.ArtistTable.COLUMN_ID,(String)pair.getKey());
-            values.put(ClassTabDB.ArtistTable.COLUMN_NAME,(String)pair.getValue());
-            try{
-                database.insert(ClassTabDB.ArtistTable.TABLE_NAME, null, values);
-                database.setTransactionSuccessful();
-            }finally {
-                database.endTransaction();
+    public Callable<Boolean> populateArtists(HashMap<String,String> artistMap){
+        final HashMap<String,String> tmpartistMap = artistMap;
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                open();
+                ContentValues values = new ContentValues();
+                Iterator it = tmpartistMap.entrySet().iterator();
+                boolean success = false;
+                while (it.hasNext()){
+                    database.beginTransaction();
+                    Map.Entry pair = (Map.Entry)it.next();
+                    values.put(ClassTabDB.ArtistTable.COLUMN_ID,(String)pair.getKey());
+                    values.put(ClassTabDB.ArtistTable.COLUMN_NAME,(String)pair.getValue());
+                    try{
+                        database.insert(ClassTabDB.ArtistTable.TABLE_NAME, null, values);
+                        database.setTransactionSuccessful();
+                        success = true;
+                    }finally {
+                        database.endTransaction();
+                    }
+                }
+                close();
+                return success;
             }
-        }
-        close();
+        };
+
     }
 
-    public void populateArtistsDates(HashMap<String,String> artistDateMap){
-        ContentValues values = new ContentValues();
-        Iterator it = artistDateMap.entrySet().iterator();
-        open();
-        while (it.hasNext()){
-            database.beginTransaction();
-            Map.Entry pair = (Map.Entry)it.next();
-            values.put(ClassTabDB.ArtistTable.COLUMN_DATE,(String)pair.getValue());
-            try{
-                database.update(ClassTabDB.ArtistTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
-                database.setTransactionSuccessful();
-            }finally {
-                database.endTransaction();
+    public Callable<Boolean> populateArtistsDates(HashMap<String,String> artistDateMap){
+        final HashMap<String,String> tmpArtistDateMap = artistDateMap;
+        return new Callable<Boolean>(){
+            @Override
+            public Boolean call() throws Exception {
+                open();
+                boolean success = false;
+                ContentValues values = new ContentValues();
+                Iterator it = tmpArtistDateMap.entrySet().iterator();
+                while (it.hasNext()){
+                    database.beginTransaction();
+                    Map.Entry pair = (Map.Entry)it.next();
+                    values.put(ClassTabDB.ArtistTable.COLUMN_DATE,(String)pair.getValue());
+                    try{
+                        database.update(ClassTabDB.ArtistTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
+                        database.setTransactionSuccessful();
+                        success = true;
+                    }finally {
+                        database.endTransaction();
+                    }
+                }
+                close();
+                return success;
             }
-        }
-        close();
+        };
+
     }
 
     /**

@@ -9,13 +9,21 @@ import to.marcus.classtab.data.local.contract.ClassTabDB;
 
 /**
  * Created by marcus on 6/24/2016
- * First run - create databases if(!exist)
+ * First run - create databases if(!exist) using Singleton pattern
  */
-public class SQLiteDBHelper extends SQLiteOpenHelper {
+public class ClassTabDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
+    private static ClassTabDBHelper sInstance;
 
-    public SQLiteDBHelper(Context context){
+    private ClassTabDBHelper(Context context){
         super(context, ClassTabDB.DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized ClassTabDBHelper getInstance(Context context){
+        if(sInstance == null){
+            sInstance = new ClassTabDBHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
     @Override
@@ -29,7 +37,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(SQLiteDBHelper.class.getSimpleName(), "Upgrading DB from version "+ oldVersion +
+        Log.w(ClassTabDBHelper.class.getSimpleName(), "Upgrading DB from version "+ oldVersion +
             " to "+ newVersion);
         db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.ArtistTable.TABLE_CREATE);
         db.execSQL("DROP TABLE IF EXISTS "+ ClassTabDB.PhotoTable.TABLE_CREATE);

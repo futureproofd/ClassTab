@@ -1,6 +1,5 @@
 package to.marcus.classtab.ui;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import to.marcus.classtab.R;
-import to.marcus.classtab.data.model.Artist;
 import to.marcus.classtab.data.model.Tab;
 
 /**
@@ -27,6 +23,7 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
 
     public TabAdapter(RecyclerViewTabClickListener listener){
         this.clickListener = listener;
+        mTabs = new LinkedHashMap<>();
     }
 
     @Override
@@ -45,7 +42,7 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
 
     @Override
     public void onBindViewHolder(TabAdapter.TabViewHolder holder, int position) {
-        holder.tabNameView.setText(mTabs.get(position).getArtistId());
+        holder.tabNameView.setText(mTabs.get(position).getName());
     }
 
     @Override

@@ -24,18 +24,18 @@ import to.marcus.classtab.data.model.PhotoQuery;
 import to.marcus.classtab.data.model.Photos;
 
 /**
- * Created by mplienegger on 7/18/2016.
+ * Created by mplienegger on 7/18/2016
  */
 public class PhotoRepositoryHelperImpl implements RepositoryHelper {
 
     private SQLiteDatabase database;
-    private SQLiteDBHelper dbHelper;
+    private ClassTabDBHelper dbHelper;
     private Context mContext;
 
     @Inject
     public PhotoRepositoryHelperImpl(Application context){
         this.mContext = context;
-        dbHelper = new SQLiteDBHelper(context);
+        dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
     public void open() throws SQLException{

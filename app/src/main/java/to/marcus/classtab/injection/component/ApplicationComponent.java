@@ -5,8 +5,6 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import to.marcus.classtab.ClassTabApplication;
-import to.marcus.classtab.data.DataManager;
 import to.marcus.classtab.injection.module.ApplicationModule;
 
 /**

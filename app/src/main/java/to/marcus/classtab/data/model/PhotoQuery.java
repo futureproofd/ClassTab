@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class PhotoQuery {
 
-    private List<Request> request = new ArrayList<Request>();
+    private List<Request> request = new ArrayList<>();
 
     public List<Request> getRequest() {
         return request;

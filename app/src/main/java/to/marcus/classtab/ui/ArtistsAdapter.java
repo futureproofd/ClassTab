@@ -27,6 +27,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
 
     public ArtistsAdapter(RecyclerViewArtistClickListener listener){
         this.clickListener = listener;
+        mArtists = new LinkedHashMap<>();
     }
 
     @Override

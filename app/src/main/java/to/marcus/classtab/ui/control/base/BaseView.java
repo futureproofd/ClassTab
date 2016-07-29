@@ -1,4 +1,4 @@
-package to.marcus.classtab.ui.control;
+package to.marcus.classtab.ui.control.base;
 
 /**
  * Created by marcus on 7/4/2016

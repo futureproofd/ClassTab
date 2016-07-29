@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.View;
 
 import java.util.LinkedHashMap;
@@ -36,10 +36,14 @@ public class HomeActivity extends BaseActivity implements MainView, RecyclerView
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         mHomePresenterImpl.attachView(this);
-       // mHomePresenterImpl.loadTabs(); //boot-strap
-        //mHomePresenterImpl.loadArtists(); //1. load artists
-        //mHomePresenterImpl.downloadPhotos(); //boot-strap
-        mHomePresenterImpl.loadArtistsWithPhotos(); //2.
+        initRecyclerAdapter();
+        mHomePresenterImpl.loadArtistsWithPhotos();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mHomePresenterImpl.detachView();
     }
 
     protected HomePresenterImpl getPresenter(){
@@ -67,7 +71,7 @@ public class HomeActivity extends BaseActivity implements MainView, RecyclerView
      */
     @Override
     public void showArtists(LinkedHashMap<Integer, Artist> artists){
-        initRecyclerAdapter();
+       // initRecyclerAdapter();
         mArtistsAdapter.setArtists(artists);
         mArtistsAdapter.notifyDataSetChanged();
     }

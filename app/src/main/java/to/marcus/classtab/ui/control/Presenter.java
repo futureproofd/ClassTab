@@ -1,5 +1,7 @@
 package to.marcus.classtab.ui.control;
 
+import to.marcus.classtab.ui.control.base.BaseView;
+
 /**
  * Created by mplienegger on 7/4/2016.
  */
