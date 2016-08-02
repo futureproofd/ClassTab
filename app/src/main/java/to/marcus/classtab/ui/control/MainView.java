@@ -10,4 +10,5 @@ import to.marcus.classtab.ui.control.base.BaseView;
  */
 public interface MainView extends BaseView {
     void showArtists(LinkedHashMap<Integer,Artist> artists);
+    //// TODO: 7/29/2016 show error, show loading 
 }

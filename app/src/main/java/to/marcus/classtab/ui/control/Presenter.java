@@ -8,4 +8,5 @@ import to.marcus.classtab.ui.control.base.BaseView;
 public interface Presenter<V extends BaseView> {
     void attachView(V BaseView);
     void detachView();
+    boolean isViewAttached();
 }

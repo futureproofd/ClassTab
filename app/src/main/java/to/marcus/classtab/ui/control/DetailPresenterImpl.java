@@ -18,7 +18,7 @@ import to.marcus.classtab.data.model.Tab;
 import to.marcus.classtab.ui.control.base.BasePresenter;
 
 /**
- * Created by mplienegger on 7/19/2016.
+ * Created by mplienegger on 7/19/2016
  */
 public class DetailPresenterImpl extends BasePresenter<DetailView> {
     private final String TAG = DetailPresenterImpl.class.getSimpleName();
@@ -37,7 +37,10 @@ public class DetailPresenterImpl extends BasePresenter<DetailView> {
                 .subscribe(new Action1<JSONArray>(){
                     @Override
                     public void call(JSONArray tabs) {
-                        getView().showTabs(presentTabs(tabs));
+                        if(isViewAttached()){
+                            getView().showTabs(presentTabs(tabs));
+                            unsubscribe();
+                        }
                     }
                 });
     }
@@ -50,7 +53,7 @@ public class DetailPresenterImpl extends BasePresenter<DetailView> {
     @Override
     public void detachView(){
         super.detachView();
-        if(mSubscription != null)mSubscription.unsubscribe();
+        unsubscribe();
     }
 
     private LinkedHashMap<Integer,Tab> presentTabs(JSONArray tabs){
@@ -63,6 +66,13 @@ public class DetailPresenterImpl extends BasePresenter<DetailView> {
             }
         }
         return mTabs;
+    }
+
+    private void unsubscribe(){
+        if(mSubscription != null && !mSubscription.isUnsubscribed()){
+            mSubscription.unsubscribe();
+        }
+        mSubscription = null;
     }
 
 }

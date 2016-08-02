@@ -32,7 +32,10 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
                 .subscribe(new Action1<JSONArray>() {
                     @Override
                     public void call(JSONArray artists) {
-                        getView().showArtists(presentArtists(artists));
+                        if(isViewAttached()){
+                            getView().showArtists(presentArtists(artists));
+                            unsubscribe();
+                        }
                     }
                 });
     }
@@ -57,7 +60,14 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
     @Override
     public void detachView(){
         super.detachView();
-        if(mSubscription != null) mSubscription.unsubscribe();
+        unsubscribe();
+    }
+
+    private void unsubscribe(){
+        if(mSubscription != null && !mSubscription.isUnsubscribed()){
+            mSubscription.unsubscribe();
+        }
+        mSubscription = null;
     }
 
 }

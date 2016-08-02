@@ -1,27 +1,35 @@
 package to.marcus.classtab.ui.control.base;
 
 
+import java.lang.ref.WeakReference;
 import to.marcus.classtab.ui.control.Presenter;
-import to.marcus.classtab.ui.control.base.BaseView;
 
 /**
  * Created by marcus on 7/4/2016
  */
-public class BasePresenter<T extends BaseView> implements Presenter<T> {
+public class BasePresenter<V extends BaseView> implements Presenter<V> {
 
-    private T mBaseView;
+    private WeakReference<V> mBaseView;
 
     @Override
-    public void attachView(T baseView) {
-        mBaseView = baseView;
+    public void attachView(V baseView) {
+        if(!isViewAttached()){
+            mBaseView = new WeakReference<>(baseView);
+        }
     }
 
     @Override
     public void detachView() {
+        mBaseView.clear();
         mBaseView = null;
     }
 
-    public T getView(){
-        return mBaseView;
+    @Override
+    public boolean isViewAttached(){
+        return mBaseView != null && mBaseView.get() != null;
+    }
+
+    public V getView(){
+        return mBaseView == null ? null : mBaseView.get();
     }
 }

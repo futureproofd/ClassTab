@@ -22,7 +22,7 @@ import javax.inject.Inject;
 /**
  * Created by marcus on 6/17/2016
  */
-public class WebParser {
+public final class WebParser {
     private static final String ARTISTS_INDEX = "div[class=artists]";
     private static final String ARTIST_ELEMENT = "div[class=artist_";
     private static final String RECORD_SONG = "song";
