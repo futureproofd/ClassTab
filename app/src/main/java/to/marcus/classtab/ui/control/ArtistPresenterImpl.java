@@ -16,12 +16,12 @@ import to.marcus.classtab.ui.control.base.BasePresenter;
 /**
  * Created by marcus on 7/4/2016
  */
-public class HomePresenterImpl extends BasePresenter<MainView> {
-    private final String TAG = HomePresenterImpl.class.getSimpleName();
+public class ArtistPresenterImpl extends BasePresenter<MainView> {
+    private final String TAG = ArtistPresenterImpl.class.getSimpleName();
     private final DataManager mDataManager;
     private Subscription mSubscription;
 
-    @Inject public HomePresenterImpl(DataManager dataManager){
+    @Inject public ArtistPresenterImpl(DataManager dataManager){
         this.mDataManager = dataManager;
     }
 
@@ -34,6 +34,23 @@ public class HomePresenterImpl extends BasePresenter<MainView> {
                     public void call(JSONArray artists) {
                         if(isViewAttached()){
                             getView().showArtists(presentArtists(artists));
+                            unsubscribe();
+                        }
+                    }
+                });
+    }
+
+    public <T> void updateArtist(String field, T value, String id){
+        mSubscription = mDataManager.updateArtistRecord(field,value,id)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean succeeded) {
+                        if(succeeded){
+                            Log.i("APPLICATION", "success updating access time!");
+                            unsubscribe();
+                        }else{
+                            Log.i("APPLICATION", "failure updating access time!");
                             unsubscribe();
                         }
                     }

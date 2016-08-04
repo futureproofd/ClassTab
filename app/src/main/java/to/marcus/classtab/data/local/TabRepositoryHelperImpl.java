@@ -23,7 +23,8 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
-import to.marcus.classtab.data.local.contract.SQLStatement;
+import to.marcus.classtab.data.local.contract.SQLQueryStatement;
+import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 import to.marcus.classtab.util.StringUtils;
 
 /**
@@ -42,12 +43,12 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
 
     /**
      * RepositoryHelper implementation to get a Database recordset
-     * @param sqlStatement A raw, parameterized SQL query
+     * @param sqlQueryStatement A raw, parameterized SQL query
      * @return Callable for an Observable
      */
     @Override
-    public Callable<JSONArray> query(final SQLStatement sqlStatement, String params) {
-        final String SQLQuery = sqlStatement.sqlQuery(params);
+    public Callable<JSONArray> query(final SQLQueryStatement sqlQueryStatement, String params) {
+        final String SQLQuery = sqlQueryStatement.sqlQuery(params);
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
@@ -71,6 +72,11 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
                 }
             }
         };
+    }
+
+    @Override
+    public Callable update(String field, SQLUpdateStatement sqlQueryStatement, Object value, Object params) {
+        return null;
     }
 
     public void open() throws SQLException {

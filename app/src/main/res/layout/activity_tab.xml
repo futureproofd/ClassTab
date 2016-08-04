@@ -10,7 +10,7 @@
         android:scrollbars="vertical"
         android:fillViewport="true">
 
-        <to.marcus.classtab.ui.custom.AutoResizeTextView
+        <to.marcus.classtab.ui.widget.AutoResizeTextView
             android:id="@+id/txt_tab_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -4,8 +4,8 @@ import dagger.Component;
 import to.marcus.classtab.ClassTabApplication;
 import to.marcus.classtab.injection.ActivityScope;
 import to.marcus.classtab.injection.module.PresenterModule;
+import to.marcus.classtab.ui.ArtistActivity;
 import to.marcus.classtab.ui.DetailActivity;
-import to.marcus.classtab.ui.HomeActivity;
 
 /**
  * Created by marcus on 7/5/2016
@@ -13,7 +13,7 @@ import to.marcus.classtab.ui.HomeActivity;
 @Component(modules = {PresenterModule.class}, dependencies = ApplicationComponent.class)
 @ActivityScope
 public interface PresenterComponent {
-    void inject(HomeActivity activity);
+    void inject(ArtistActivity activity);
     void inject(DetailActivity activity);
     void inject(ClassTabApplication application);
 }

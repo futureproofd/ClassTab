@@ -13,6 +13,7 @@ public class Artist{
     private String date;
     private String url;
     private String encodedName;
+    private Long accessTime;
 
     public Artist(JSONObject json) throws JSONException{
         this.name = json.getString("name");
@@ -69,5 +70,13 @@ public class Artist{
 
     public void setEncodedName(String encodedName) {
         this.encodedName = encodedName;
+    }
+
+    public Long getAccessTime() {
+        return accessTime;
+    }
+
+    public void setAccessTime(Long accessTime) {
+        this.accessTime = accessTime;
     }
 }

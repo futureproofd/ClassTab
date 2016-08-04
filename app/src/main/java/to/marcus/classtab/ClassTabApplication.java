@@ -35,13 +35,13 @@ public class ClassTabApplication extends Application {
         getPresenter();
         Stetho.initializeWithDefaults(this);
         //// TODO: 7/27/2016 make sure these run synchronously
-     // mApplicationPresenterImpl.populateArtistTable();
-     // mApplicationPresenterImpl.populateArtistDates();
-      //mApplicationPresenterImpl.populateTabTable();
+        //mApplicationPresenterImpl.populateArtistTable();
+        //mApplicationPresenterImpl.populateArtistDates();
+       // mApplicationPresenterImpl.populateTabTable();
         //// TODO: 7/27/2016 issue :  java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase: /data/user/0/to.marcus.classtab/databases/classTab.db
-        //mApplicationPresenterImpl.populateTabTitles();
+       //mApplicationPresenterImpl.populateTabTitles();
         //// TODO: 7/28/2016  downloads photos but doesn't finish on time for recycler adapter
-        //mApplicationPresenterImpl.downloadPhotos();
+       //mApplicationPresenterImpl.downloadPhotos();
 
     }
 

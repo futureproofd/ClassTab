@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp">
-    <to.marcus.classtab.ui.custom.CircleImageView
+    <to.marcus.classtab.ui.widget.CircleImageView
         android:id="@+id/img_tab"
         android:layout_width="80dp"
         android:layout_height="80dp"

@@ -24,6 +24,7 @@ import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllArtistsByLetterIndexQuery;
 import to.marcus.classtab.data.local.contract.query.AllArtistsWithPhotosQuery;
 import to.marcus.classtab.data.local.contract.query.AllTabsByArtistIdQuery;
+import to.marcus.classtab.data.local.contract.update.ArtistRecordUpdate;
 import to.marcus.classtab.data.model.Photos;
 import to.marcus.classtab.data.remote.GoogleImageAPI;
 
@@ -75,6 +76,11 @@ public class DataManager {
 
     public Observable<Boolean> populateTabTitles(){
         return makeObservable(tabRepositoryHelper.populateTabTitles(mWebParser.getTabTitles()));
+    }
+
+    public <T> Observable<Boolean> updateArtistRecord(String field, T value, String id){
+        Log.i("DATAMANAGER", "updating access time");
+        return makeObservable(artistRepositoryHelper.update(field,new ArtistRecordUpdate(),value,id));
     }
 
     /**

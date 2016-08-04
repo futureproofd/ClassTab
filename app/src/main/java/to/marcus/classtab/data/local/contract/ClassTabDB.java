@@ -13,12 +13,14 @@ public class ClassTabDB {
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_ACCESSTIME = "accessTime";
 
         public static final String TABLE_CREATE = "create table "
                 +TABLE_NAME +"("
                 +COLUMN_ID+" text primary key, "
                 +COLUMN_NAME+" text not null, "
-                +COLUMN_DATE+" text);";
+                +COLUMN_DATE+" text, "
+                +COLUMN_ACCESSTIME+ " INTEGER);";
     }
 
     public abstract static class VideoTable{

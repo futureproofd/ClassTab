@@ -1,4 +1,4 @@
-package to.marcus.classtab.ui.custom;
+package to.marcus.classtab.ui.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;

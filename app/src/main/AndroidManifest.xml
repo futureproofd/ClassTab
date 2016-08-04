@@ -9,18 +9,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".ClassTabApplication">
-        <activity android:name=".ui.HomeActivity">
+        <activity android:name=".ui.ArtistActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.DetailActivity"
-            android:parentActivityName=".ui.HomeActivity"
+            android:parentActivityName=".ui.ArtistActivity"
         ></activity>
         <activity android:name=".ui.TabActivity"
             android:parentActivityName=".ui.DetailActivity">
         </activity>
+        <activity android:name=".ui.HomeActivity"> </activity>
     </application>
 
 </manifest>

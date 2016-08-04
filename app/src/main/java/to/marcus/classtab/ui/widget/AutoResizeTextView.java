@@ -1,4 +1,4 @@
-package to.marcus.classtab.ui.custom;
+package to.marcus.classtab.ui.widget;
 
 /**
  *               DO WHAT YOU WANT TO PUBLIC LICENSE

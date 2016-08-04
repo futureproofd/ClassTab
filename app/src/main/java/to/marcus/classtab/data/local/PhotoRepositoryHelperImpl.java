@@ -19,7 +19,8 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
-import to.marcus.classtab.data.local.contract.SQLStatement;
+import to.marcus.classtab.data.local.contract.SQLQueryStatement;
+import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 import to.marcus.classtab.data.model.PhotoQuery;
 import to.marcus.classtab.data.model.Photos;
 
@@ -48,8 +49,8 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
 
 
     @Override
-    public Callable<JSONArray> query(SQLStatement sqlStatement, String params) {
-        final String SQLQuery = sqlStatement.sqlQuery(params);
+    public Callable<JSONArray> query(SQLQueryStatement sqlQueryStatement, String params) {
+        final String SQLQuery = sqlQueryStatement.sqlQuery(params);
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
@@ -75,6 +76,11 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
 
             }
         };
+    }
+
+    @Override
+    public Callable update(String field, SQLUpdateStatement sqlQueryStatement, Object value, Object params) {
+        return null;
     }
 
     public void populatePhotoNameAndId(HashMap<String,String> artistMap){

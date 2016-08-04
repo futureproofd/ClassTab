@@ -50,7 +50,9 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         holder.artistDateView.setText(mArtists.get(position).getDate());
         Context context = holder.artistImageView.getContext();
         Picasso.with(context).load(mArtists.get(position).getUrl())
+                .placeholder(R.drawable.user96)
                 .into(holder.artistImageView);
+
     }
 
     @Override

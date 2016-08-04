@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import to.marcus.classtab.R;
-import to.marcus.classtab.ui.custom.AutoResizeTextView;
+import to.marcus.classtab.ui.widget.AutoResizeTextView;
 
 /**
  * Created by mplienegger on 7/21/2016

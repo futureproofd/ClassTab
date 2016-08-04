@@ -18,7 +18,8 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
-import to.marcus.classtab.data.local.contract.SQLStatement;
+import to.marcus.classtab.data.local.contract.SQLQueryStatement;
+import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 
 /**
  * Created by marcus on 6/24/2016
@@ -101,17 +102,16 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
                 return success;
             }
         };
-
     }
 
     /**
      * RepositoryHelper implementation to get a Database recordset
-     * @param sqlStatement A raw, parameterized SQL query
+     * @param sqlQueryStatement A raw, parameterized SQL query
      * @return Callable for an Observable
      */
     @Override
-    public Callable<JSONArray> query(SQLStatement sqlStatement, String params) {
-        final String SQLQuery = sqlStatement.sqlQuery(params);
+    public Callable<JSONArray> query(SQLQueryStatement sqlQueryStatement, String params) {
+        final String SQLQuery = sqlQueryStatement.sqlQuery(params);
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
@@ -137,5 +137,30 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
     }
 
 
+    @Override
+    public Callable<Boolean> update(String field, SQLUpdateStatement sqlUpdateStatement,Object value, Object params) {
+        final String updateField = field;
+        final Object updateValue = value;
+        final Object updateId = params;
+        return new Callable<Boolean>(){
+            @Override
+            public Boolean call() throws Exception {
+                open();
+                boolean success = false;
+                ContentValues values = new ContentValues();
+                database.beginTransaction();
+                values.put(updateField,(Long)updateValue);
+                try{
+                    database.update(ClassTabDB.ArtistTable.TABLE_NAME, values, "id='"+updateId+"'",null);
+                    database.setTransactionSuccessful();
+                    success = true;
+                }finally {
+                    database.endTransaction();
+                }
+                close();
+                return success;
+            }
+        };
+    }
 
 }

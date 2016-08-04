@@ -2,12 +2,13 @@ package to.marcus.classtab.data.local;
 
 import java.util.concurrent.Callable;
 
-import to.marcus.classtab.data.local.contract.SQLStatement;
+import to.marcus.classtab.data.local.contract.SQLQueryStatement;
+import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 
 /**
  * Created by marcus on 6/29/2016
  */
-public interface RepositoryHelper<T>{
-    Callable<T> query(SQLStatement sqlStatement, String params);
-    //// TODO: 6/30/2016 add/remove/delete etc... 
+public interface RepositoryHelper<T,P,V>{
+    Callable<T> query(SQLQueryStatement sqlQueryStatement, String params);
+    Callable<T> update(String field, SQLUpdateStatement sqlQueryStatement, V value, P params);
 }
