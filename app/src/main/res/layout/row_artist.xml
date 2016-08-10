@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="16dp"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:foreground="?android:selectableItemBackground">
     <to.marcus.classtab.ui.widget.CircleImageView
         android:id="@+id/img_artist"
         android:layout_width="80dp"
@@ -12,7 +17,7 @@
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/img_artist"
+        android:layout_below="@id/img_artist"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:text="test"
@@ -22,7 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_artist_name"
-        android:layout_toRightOf="@id/img_artist"
         android:paddingLeft="10dp"
         android:text="test2"
         />

@@ -75,7 +75,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
     }
 
     @Override
-    public Callable update(String field, SQLUpdateStatement sqlQueryStatement, Object value, Object params) {
+    public Callable update(String field, Object value, Object params) {
         return null;
     }
 

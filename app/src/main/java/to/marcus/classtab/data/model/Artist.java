@@ -3,6 +3,8 @@ package to.marcus.classtab.data.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 /**
  * Created by marcus on 6/24/2016
  * Artist Model
@@ -14,6 +16,7 @@ public class Artist{
     private String url;
     private String encodedName;
     private Long accessTime;
+    private int columnSpan;
 
     public Artist(JSONObject json) throws JSONException{
         this.name = json.getString("name");
@@ -29,6 +32,12 @@ public class Artist{
         }else{
             this.encodedName = json.getString("encodedName");
         }
+        if(!json.has("accessTime") || json.isNull("accessTime")){
+            this.accessTime = 0l;
+        }else{
+            this.accessTime = json.getLong("accessTime");
+        }
+        this.columnSpan = 1;
     }
 
     public String getName() {
@@ -78,5 +87,13 @@ public class Artist{
 
     public void setAccessTime(Long accessTime) {
         this.accessTime = accessTime;
+    }
+
+    public int getColumnSpan() {
+        return columnSpan;
+    }
+
+    public void setColumnSpan(int columnSpan) {
+        this.columnSpan = columnSpan;
     }
 }

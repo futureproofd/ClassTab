@@ -80,7 +80,7 @@ public class DataManager {
 
     public <T> Observable<Boolean> updateArtistRecord(String field, T value, String id){
         Log.i("DATAMANAGER", "updating access time");
-        return makeObservable(artistRepositoryHelper.update(field,new ArtistRecordUpdate(),value,id));
+        return makeObservable(artistRepositoryHelper.update(field,value,id));
     }
 
     /**

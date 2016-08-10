@@ -2,6 +2,7 @@ package to.marcus.classtab.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -24,8 +25,8 @@ import to.marcus.classtab.ui.control.MainView;
 
 public class ArtistActivity extends BaseActivity implements MainView, RecyclerViewArtistClickListener{
     private static final String TAG = ArtistActivity.class.getSimpleName();
-    private ArtistsAdapter mArtistsAdapter;
-    private LinearLayoutManager mLayoutManager;
+    private ArtistAdapter mArtistAdapter;
+    private GridLayoutManager mLayoutManager;
 
     @Inject
     ArtistPresenterImpl mArtistPresenterImpl;
@@ -60,11 +61,19 @@ public class ArtistActivity extends BaseActivity implements MainView, RecyclerVi
     }
 
     private void initRecyclerAdapter(){
-        if(mArtistsAdapter == null){
-            mLayoutManager = new LinearLayoutManager(this);
+        if(mArtistAdapter == null){
+            mArtistAdapter = new ArtistAdapter(this,2);
+            mRecyclerView.setAdapter(mArtistAdapter);
+            mLayoutManager = new GridLayoutManager(this,2);
+            mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+                 @Override
+                 public int getSpanSize(int position) {
+                     return mArtistAdapter.getItemColumnSpan(position);
+                 }
+                }
+            );
             mRecyclerView.setLayoutManager(mLayoutManager);
-            mArtistsAdapter = new ArtistsAdapter(this);
-            mRecyclerView.setAdapter(mArtistsAdapter);
+
         }
     }
 
@@ -73,8 +82,8 @@ public class ArtistActivity extends BaseActivity implements MainView, RecyclerVi
      */
     @Override
     public void showArtists(LinkedHashMap<Integer, Artist> artists){
-        mArtistsAdapter.setArtists(artists);
-        mArtistsAdapter.notifyDataSetChanged();
+        mArtistAdapter.setArtists(artists);
+        mArtistAdapter.notifyDataSetChanged();
     }
 
     //ArtistsAdapter clickListener

@@ -77,6 +77,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
 
     }
 
+    //Set Display Date and default accessTime
     public Callable<Boolean> populateArtistsDates(HashMap<String,String> artistDateMap){
         final HashMap<String,String> tmpArtistDateMap = artistDateMap;
         return new Callable<Boolean>(){
@@ -90,6 +91,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
                     database.beginTransaction();
                     Map.Entry pair = (Map.Entry)it.next();
                     values.put(ClassTabDB.ArtistTable.COLUMN_DATE,(String)pair.getValue());
+                    values.put(ClassTabDB.ArtistTable.COLUMN_ACCESSTIME, 0);
                     try{
                         database.update(ClassTabDB.ArtistTable.TABLE_NAME, values, "id='"+pair.getKey()+"'",null);
                         database.setTransactionSuccessful();
@@ -136,9 +138,15 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         };
     }
 
-
+    /**
+     * RepositoryHelper implementation to update a Database record
+     * @param field the database field to perform update on
+     * @param value the update value
+     * @param params the where clause (id equals param)
+     * @return boolean on success or failure
+     */
     @Override
-    public Callable<Boolean> update(String field, SQLUpdateStatement sqlUpdateStatement,Object value, Object params) {
+    public Callable<Boolean> update(String field, Object value, Object params) {
         final String updateField = field;
         final Object updateValue = value;
         final Object updateId = params;
@@ -147,11 +155,10 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
             public Boolean call() throws Exception {
                 open();
                 boolean success = false;
-                ContentValues values = new ContentValues();
                 database.beginTransaction();
-                values.put(updateField,(Long)updateValue);
+                //// TODO: 8/4/2016 cast as correct type based on field name (new helper static method?)
                 try{
-                    database.update(ClassTabDB.ArtistTable.TABLE_NAME, values, "id='"+updateId+"'",null);
+                    database.update(ClassTabDB.ArtistTable.TABLE_NAME, castToContentValues(updateField,updateValue), "id='"+updateId+"'",null);
                     database.setTransactionSuccessful();
                     success = true;
                 }finally {
@@ -161,6 +168,25 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
                 return success;
             }
         };
+    }
+
+    /*
+    To ensure the update field is cast to the correct type before updating the DB
+     */
+    private <T> ContentValues castToContentValues(String updateField, T value){
+        ContentValues values = new ContentValues();
+        switch (updateField){
+            case ClassTabDB.ArtistTable.COLUMN_ACCESSTIME:
+                values.put(updateField,(Long)value);
+                break;
+            case ClassTabDB.ArtistTable.COLUMN_DATE:
+                values.put(updateField,(String)value);
+                break;
+            case ClassTabDB.ArtistTable.COLUMN_NAME:
+                values.put(updateField,(String)value);
+                break;
+        }
+        return values;
     }
 
 }

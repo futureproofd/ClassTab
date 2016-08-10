@@ -10,5 +10,5 @@ import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
  */
 public interface RepositoryHelper<T,P,V>{
     Callable<T> query(SQLQueryStatement sqlQueryStatement, String params);
-    Callable<T> update(String field, SQLUpdateStatement sqlQueryStatement, V value, P params);
+    Callable<T> update(String field, V value, P params);
 }
