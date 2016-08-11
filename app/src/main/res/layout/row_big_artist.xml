@@ -9,27 +9,27 @@
     android:minHeight="?android:listPreferredItemHeightSmall"
     android:foreground="?android:selectableItemBackground">
     <to.marcus.classtab.ui.widget.CircleImageView
-        android:id="@+id/img_artist"
-        android:layout_width="80dp"
+        android:id="@+id/img_big_artist"
+        android:layout_width="160dp"
         android:layout_centerHorizontal="true"
-        android:layout_height="80dp"/>
+        android:layout_height="160dp"/>
     <TextView
-        android:id="@+id/txt_artist_name"
-        android:textSize="16sp"
+        android:id="@+id/txt_big_artist_name"
+        android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/img_artist"
+        android:layout_below="@id/img_big_artist"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:text="test"
         />
     <TextView
-        android:id="@+id/txt_artist_date"
+        android:id="@+id/txt_big_artist_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/txt_artist_name"
+        android:layout_below="@id/txt_big_artist_name"
         android:paddingLeft="10dp"
         android:text="test2"
         />
