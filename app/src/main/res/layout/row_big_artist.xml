@@ -13,7 +13,7 @@
         android:layout_width="160dp"
         android:layout_centerHorizontal="true"
         android:layout_height="160dp"/>
-    <TextView
+    <to.marcus.classtab.ui.widget.AutoResizeTextView
         android:id="@+id/txt_big_artist_name"
         android:textSize="20sp"
         android:layout_width="wrap_content"
@@ -22,6 +22,7 @@
         android:layout_below="@id/img_big_artist"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
+        android:maxLines="1"
         android:text="test"
         />
     <TextView

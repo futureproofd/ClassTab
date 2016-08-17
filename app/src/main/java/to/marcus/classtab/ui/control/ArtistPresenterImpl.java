@@ -26,7 +26,7 @@ public class ArtistPresenterImpl extends BasePresenter<MainView> {
     }
 
     public void loadArtistsWithPhotos(){
-        mSubscription = mDataManager.getArtistsWithPhotos()
+        mSubscription = mDataManager.getTopArtistsWithPhotos()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<JSONArray>() {

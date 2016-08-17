@@ -7,7 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/ClassTab"
         android:name=".ClassTabApplication">
         <activity android:name=".ui.ArtistActivity">
             <intent-filter>
@@ -21,7 +21,6 @@
         <activity android:name=".ui.TabActivity"
             android:parentActivityName=".ui.DetailActivity">
         </activity>
-        <activity android:name=".ui.HomeActivity"> </activity>
     </application>
 
 </manifest>

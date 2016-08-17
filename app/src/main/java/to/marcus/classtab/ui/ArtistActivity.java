@@ -3,7 +3,6 @@ package to.marcus.classtab.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.View;
@@ -28,15 +27,13 @@ public class ArtistActivity extends BaseActivity implements MainView, RecyclerVi
     private ArtistAdapter mArtistAdapter;
     private GridLayoutManager mLayoutManager;
 
-    @Inject
-    ArtistPresenterImpl mArtistPresenterImpl;
+    @Inject ArtistPresenterImpl mArtistPresenterImpl;
     @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getPresenter();
-        setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         mArtistPresenterImpl.attachView(this);
         initRecyclerAdapter();
@@ -70,8 +67,7 @@ public class ArtistActivity extends BaseActivity implements MainView, RecyclerVi
                  public int getSpanSize(int position) {
                      return mArtistAdapter.getItemColumnSpan(position);
                  }
-                }
-            );
+            });
             mRecyclerView.setLayoutManager(mLayoutManager);
 
         }
