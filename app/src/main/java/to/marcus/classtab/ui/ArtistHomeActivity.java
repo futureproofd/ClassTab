@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.LinkedHashMap;
@@ -22,8 +24,8 @@ import to.marcus.classtab.injection.module.PresenterModule;
 import to.marcus.classtab.ui.control.ArtistPresenterImpl;
 import to.marcus.classtab.ui.control.MainView;
 
-public class ArtistActivity extends BaseActivity implements MainView, RecyclerViewArtistClickListener{
-    private static final String TAG = ArtistActivity.class.getSimpleName();
+public class ArtistHomeActivity extends BaseActivity implements MainView, RecyclerViewArtistClickListener{
+    private static final String TAG = ArtistHomeActivity.class.getSimpleName();
     private ArtistAdapter mArtistAdapter;
     private GridLayoutManager mLayoutManager;
 
@@ -71,6 +73,20 @@ public class ArtistActivity extends BaseActivity implements MainView, RecyclerVi
             mRecyclerView.setLayoutManager(mLayoutManager);
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.menu_index:
+                Log.d(TAG, "onOptionsItemSelected: test index");
+                return true;
+            case R.id.menu_search:
+                Intent intent = new Intent(this,SearchActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
