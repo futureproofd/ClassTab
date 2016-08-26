@@ -2,8 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:background="@color/background_dark"
+        android:layout_height="?android:actionBarSize">
+    </android.support.v7.widget.SearchView>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_recycler_view"
+        android:layout_below="@id/search_view"
         android:scrollbars="vertical"
         android:scrollbarStyle="outsideOverlay"
         android:layout_width="match_parent"

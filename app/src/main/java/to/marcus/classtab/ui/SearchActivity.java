@@ -1,7 +1,11 @@
 package to.marcus.classtab.ui;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.text.InputType;
+import android.util.Log;
 
 import java.util.LinkedHashMap;
 
@@ -20,11 +24,13 @@ import to.marcus.classtab.ui.control.MainView;
 /**
  * Created by mplienegger on 8/18/2016
  */
-public class SearchActivity extends BaseActivity implements MainView {
+public class SearchActivity extends AppCompatActivity implements MainView {
+    private static final String TAG = SearchActivity.class.getSimpleName();
 
-    @Inject
-    ArtistPresenterImpl mArtistPresenterImpl;
+    @Inject ArtistPresenterImpl mArtistPresenterImpl;
     @BindView(R.id.search_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.search_view) SearchView mSearchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +38,7 @@ public class SearchActivity extends BaseActivity implements MainView {
         getPresenter();
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-        mArtistPresenterImpl.doSomething();
+        initSearchView();
     }
 
     protected ArtistPresenterImpl getPresenter(){
@@ -52,7 +58,29 @@ public class SearchActivity extends BaseActivity implements MainView {
     }
 
     private void initSearchView(){
+        mSearchView.setQueryHint(getString(R.string.search_view_hint));
+        mSearchView.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mArtistPresenterImpl.doSomething();
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //first clear results
+                return true;
+            }
+        });
+    }
+
+    private void clearResults(){
+        //clear adapter
+        //clear subscription
+        //clear results view
+        //clear progress view
+        //clear no results view
     }
 
     @Override
