@@ -71,7 +71,6 @@ public class ArtistHomeActivity extends BaseActivity implements MainView, Recycl
                  }
             });
             mRecyclerView.setLayoutManager(mLayoutManager);
-
         }
     }
 

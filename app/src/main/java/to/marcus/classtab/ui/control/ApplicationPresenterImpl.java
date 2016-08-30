@@ -42,6 +42,7 @@ public class ApplicationPresenterImpl extends BasePresenter<BaseView> {
                 public void call(Boolean succeeded) {
                     if(succeeded){
                         Log.i("APPLICATION", "success artists!");
+                        populateArtistDates();
                     }else{
                         Log.i("APPLICATION", "failure!");
                     }
@@ -56,6 +57,7 @@ public class ApplicationPresenterImpl extends BasePresenter<BaseView> {
                 @Override
                 public void call(Boolean succeeded) {
                     if(succeeded){
+                        downloadPhotos();
                         Log.i("APPLICATION", "success dates!");
                     }else{
                         Log.i("APPLICATION", "failure dates!");
@@ -99,7 +101,7 @@ public class ApplicationPresenterImpl extends BasePresenter<BaseView> {
      * uses map to iterate over artists, extract name, flatmap each individual name
      * to google API. Return combined resultSet to dataManager for saving
      */
-    public void downloadPhotos(){
+    public synchronized void downloadPhotos(){
         mDataManager.getArtists()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Action1<JSONArray>() {

@@ -73,10 +73,6 @@ public class ArtistPresenterImpl extends BasePresenter<MainView> {
     public void attachView(MainView mainView){
         super.attachView(mainView);
     }
-    
-    public void doSomething(){
-        Log.d(TAG, "doSomething: worked");
-    }
 
     @Override
     public void detachView(){

@@ -41,6 +41,14 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
+    public void openForWrite() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getWritableDatabase();
+    }
+
+    public void openForRead() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getReadableDatabase();
+    }
+
     /**
      * RepositoryHelper implementation to get a Database recordset
      * @param sqlQueryStatement A raw, parameterized SQL query
@@ -52,7 +60,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
-                open();
+                openForRead();
                 try{
                     Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
                     JSONArray resultSet = new JSONArray();
@@ -79,10 +87,6 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         return null;
     }
 
-    public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
-    }
-
     public void close(){
         dbHelper.close();
     }
@@ -98,7 +102,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
                 boolean isSuccess = false;
                 ContentValues values = new ContentValues();
                 Iterator it = tmpTabMap.entrySet().iterator();
-                open();
+                openForWrite();
                 while (it.hasNext()){
                     database.beginTransaction();
                     Map.Entry pair = (Map.Entry)it.next();
@@ -126,7 +130,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
                 boolean isSuccess = false;
                 ContentValues values = new ContentValues();
                 Iterator it = tmpTabTitles.entrySet().iterator();
-                open();
+                openForWrite();
                 while (it.hasNext()){
                     database.beginTransaction();
                     Map.Entry pair = (Map.Entry)it.next();

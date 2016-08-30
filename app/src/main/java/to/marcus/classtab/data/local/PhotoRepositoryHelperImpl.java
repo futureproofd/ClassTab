@@ -20,7 +20,6 @@ import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
 import to.marcus.classtab.data.local.contract.SQLQueryStatement;
-import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 import to.marcus.classtab.data.model.PhotoQuery;
 import to.marcus.classtab.data.model.Photos;
 
@@ -39,8 +38,12 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
         dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
-    public void open() throws SQLException{
-        database = dbHelper.getWritableDatabase();
+    public void openForWrite() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getWritableDatabase();
+    }
+
+    public void openForRead() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getReadableDatabase();
     }
 
     public void close(){
@@ -54,7 +57,7 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
-                open();
+                openForRead();
                 try{
                     Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
                     JSONArray resultSet = new JSONArray();
@@ -86,7 +89,7 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
     public void populatePhotoNameAndId(HashMap<String,String> artistMap){
         ContentValues values = new ContentValues();
         Iterator it = artistMap.entrySet().iterator();
-        open();
+        openForWrite();
         while (it.hasNext()){
             database.beginTransaction();
             Map.Entry pair = (Map.Entry)it.next();
@@ -104,7 +107,7 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
 
     public void populatePhotoURL(List<Photos> urlList){
         ContentValues values = new ContentValues();
-        open();
+        openForWrite();
         for(Photos p : urlList){
             database.beginTransaction();
             for(int i= 0;i < 1; i++){

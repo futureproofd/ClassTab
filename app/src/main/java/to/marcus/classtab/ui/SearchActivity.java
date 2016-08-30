@@ -2,10 +2,12 @@ package to.marcus.classtab.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.View;
 
 import java.util.LinkedHashMap;
 
@@ -15,19 +17,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import to.marcus.classtab.ClassTabApplication;
 import to.marcus.classtab.R;
-import to.marcus.classtab.data.model.Artist;
+import to.marcus.classtab.data.model.Tab;
 import to.marcus.classtab.injection.component.DaggerPresenterComponent;
 import to.marcus.classtab.injection.module.PresenterModule;
-import to.marcus.classtab.ui.control.ArtistPresenterImpl;
-import to.marcus.classtab.ui.control.MainView;
+import to.marcus.classtab.ui.control.DetailPresenterImpl;
+import to.marcus.classtab.ui.control.DetailView;
 
 /**
  * Created by mplienegger on 8/18/2016
  */
-public class SearchActivity extends AppCompatActivity implements MainView {
+public class SearchActivity extends AppCompatActivity implements DetailView, RecyclerViewTabClickListener {
     private static final String TAG = SearchActivity.class.getSimpleName();
+    private TabAdapter mTabAdapter;
+    private LinearLayoutManager mLayoutManager;
 
-    @Inject ArtistPresenterImpl mArtistPresenterImpl;
+    @Inject DetailPresenterImpl mDetailPresenterImpl;
     @BindView(R.id.search_recycler_view) RecyclerView mRecyclerView;
     @BindView(R.id.search_view) SearchView mSearchView;
 
@@ -39,17 +43,18 @@ public class SearchActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
         initSearchView();
+        initRecyclerAdapter();
     }
 
-    protected ArtistPresenterImpl getPresenter(){
-        if(mArtistPresenterImpl == null){
+    protected DetailPresenterImpl getPresenter(){
+        if(mDetailPresenterImpl == null){
             DaggerPresenterComponent.builder()
                     .applicationComponent(ClassTabApplication.getApplicationComponent())
                     .presenterModule(new PresenterModule())
                     .build().inject(this);
-            mArtistPresenterImpl.attachView(this);
+            mDetailPresenterImpl.attachView(this);
         }
-        return mArtistPresenterImpl;
+        return mDetailPresenterImpl;
     }
 
     @Override
@@ -63,7 +68,7 @@ public class SearchActivity extends AppCompatActivity implements MainView {
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mArtistPresenterImpl.doSomething();
+                search(query);
                 return true;
             }
 
@@ -75,6 +80,15 @@ public class SearchActivity extends AppCompatActivity implements MainView {
         });
     }
 
+    private void initRecyclerAdapter(){
+        if(mTabAdapter == null){
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mTabAdapter = new TabAdapter(this);
+            mRecyclerView.setAdapter(mTabAdapter);
+        }
+    }
+
     private void clearResults(){
         //clear adapter
         //clear subscription
@@ -83,8 +97,24 @@ public class SearchActivity extends AppCompatActivity implements MainView {
         //clear no results view
     }
 
-    @Override
-    public void showArtists(LinkedHashMap<Integer, Artist> artists) {
+    private void search(String query){
+        //clearResults
+        //set progress visibility
+        mSearchView.clearFocus();
+        mDetailPresenterImpl.loadSearchResults(query);
+    }
 
+    @Override
+    public void onObjectClick(View v, byte[] tab) {
+        Log.d(TAG, "onObjectClick: clicked");
+    }
+
+    @Override
+    public void showTabs(LinkedHashMap<Integer, Tab> tabs) {
+        Log.d(TAG, "showTabs: tabs");
+        if(tabs.size() > 0){
+            mTabAdapter.setTabs(tabs);
+            mTabAdapter.notifyDataSetChanged();
+        }
     }
 }

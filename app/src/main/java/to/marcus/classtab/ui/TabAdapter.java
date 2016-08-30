@@ -54,6 +54,11 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
         this.mTabs = tabs;
     }
 
+    public void removeAllItems(){
+        mTabs.clear();
+        notifyDataSetChanged();
+    }
+
     class TabViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.txt_tab_name)TextView tabNameView;

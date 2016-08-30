@@ -35,8 +35,12 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
-    public void open() throws SQLException{
-        database = dbHelper.getWritableDatabase();
+    public void openForWrite() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getWritableDatabase();
+    }
+
+    public void openForRead() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getReadableDatabase();
     }
 
     public void close(){
@@ -53,7 +57,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                open();
+                openForWrite();
                 ContentValues values = new ContentValues();
                 Iterator it = tmpartistMap.entrySet().iterator();
                 boolean success = false;
@@ -83,7 +87,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                open();
+                openForWrite();
                 boolean success = false;
                 ContentValues values = new ContentValues();
                 Iterator it = tmpArtistDateMap.entrySet().iterator();
@@ -117,7 +121,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         return new Callable<JSONArray>() {
             @Override
             public JSONArray call() throws Exception {
-                open();
+                openForRead();
                 try{
                     Cursor cursor = database.rawQuery(SQLQuery, new String[]{});
                     JSONArray resultSet = new JSONArray();
@@ -153,7 +157,7 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         return new Callable<Boolean>(){
             @Override
             public Boolean call() throws Exception {
-                open();
+                openForWrite();
                 boolean success = false;
                 database.beginTransaction();
                 //// TODO: 8/4/2016 cast as correct type based on field name (new helper static method?)

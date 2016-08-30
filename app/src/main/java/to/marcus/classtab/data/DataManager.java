@@ -24,8 +24,8 @@ import to.marcus.classtab.data.local.TabRepositoryHelperImpl;
 import to.marcus.classtab.data.local.contract.query.AllArtistsByLetterIndexQuery;
 import to.marcus.classtab.data.local.contract.query.AllArtistsWithPhotosQuery;
 import to.marcus.classtab.data.local.contract.query.AllTabsByArtistIdQuery;
+import to.marcus.classtab.data.local.contract.query.ArtistTabsBySearchTermQuery;
 import to.marcus.classtab.data.local.contract.query.TopArtistsWithPhotosQuery;
-import to.marcus.classtab.data.local.contract.update.ArtistRecordUpdate;
 import to.marcus.classtab.data.model.Photos;
 import to.marcus.classtab.data.remote.GoogleImageAPI;
 
@@ -57,6 +57,10 @@ public class DataManager {
 
     public Observable<JSONArray> getArtists(){
         return makeObservable(artistRepositoryHelper.query(new AllArtistsByLetterIndexQuery(),null));
+    }
+
+    public Observable<JSONArray> getArtist(String searchTerm){
+        return makeObservable(tabRepositoryHelper.query(new ArtistTabsBySearchTermQuery(),searchTerm));
     }
 
     public Observable<JSONArray> getArtistsWithPhotos(){

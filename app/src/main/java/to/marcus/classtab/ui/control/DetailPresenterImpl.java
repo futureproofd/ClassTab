@@ -45,6 +45,21 @@ public class DetailPresenterImpl extends BasePresenter<DetailView> {
                 });
     }
 
+    public void loadSearchResults(String query){
+        mSubscription = mDataManager.getArtist(query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<JSONArray>() {
+                    @Override
+                    public void call(JSONArray tabs) {
+                        if(isViewAttached()){
+                            getView().showTabs(presentTabs(tabs));
+                            unsubscribe();
+                        }
+                    }
+                });
+    }
+
     @Override
     public void attachView(DetailView detailView){
         super.attachView(detailView);

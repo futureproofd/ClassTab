@@ -144,7 +144,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     //After sorting, the Latest accessed record should always be first
     private void resizePopularArtist(){
-        mArtists.entrySet().iterator().next().getValue().setColumnSpan(2);
+        if(mArtists.size() > 0)
+            mArtists.entrySet().iterator().next().getValue().setColumnSpan(2);
     }
 
     public int getItemColumnSpan(int position){
