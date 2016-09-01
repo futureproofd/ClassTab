@@ -19,7 +19,6 @@ import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
 import to.marcus.classtab.data.local.contract.SQLQueryStatement;
-import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 
 /**
  * Created by marcus on 6/24/2016
@@ -35,18 +34,16 @@ public class ArtistRepositoryHelperImpl implements RepositoryHelper {
         dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
-    public void openForWrite() throws SQLException{
-        database = ClassTabDBHelper.getInstance(mContext).getWritableDatabase();
+    private void openForWrite() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getWritableDB();
     }
 
-    public void openForRead() throws SQLException{
-        database = ClassTabDBHelper.getInstance(mContext).getReadableDatabase();
+    private void openForRead() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getReadableDB();
     }
 
-    public void close(){
-        if(database != null && database.isOpen()){
-            database.close();
-        }
+    private void close(){
+        ClassTabDBHelper.getInstance(mContext).closeDB();
     }
 
     /**

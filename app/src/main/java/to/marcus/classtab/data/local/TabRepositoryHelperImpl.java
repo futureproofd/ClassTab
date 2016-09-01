@@ -41,12 +41,16 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
-    public void openForWrite() throws SQLException{
-        database = ClassTabDBHelper.getInstance(mContext).getWritableDatabase();
+    private void openForWrite() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getWritableDB();
     }
 
-    public void openForRead() throws SQLException{
-        database = ClassTabDBHelper.getInstance(mContext).getReadableDatabase();
+    private void openForRead() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getReadableDB();
+    }
+
+    private void close(){
+        ClassTabDBHelper.getInstance(mContext).closeDB();
     }
 
     /**
@@ -87,9 +91,6 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         return null;
     }
 
-    public void close(){
-        dbHelper.close();
-    }
 
     /*
     Bootstrap methods

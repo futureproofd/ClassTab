@@ -34,14 +34,7 @@ public class ClassTabApplication extends Application {
         //// TODO: 7/8/2016 initiate bootstrap DB build process here - reuse version check code
         getPresenter();
         Stetho.initializeWithDefaults(this);
-        //// TODO: 7/27/2016 make sure these run synchronously
         //mApplicationPresenterImpl.populateArtistTable();
-        //mApplicationPresenterImpl.populateArtistDates();
-        //// TODO: 7/28/2016  downloads photos but doesn't finish on time for recycler adapter
-        //mApplicationPresenterImpl.downloadPhotos();
-        //mApplicationPresenterImpl.populateTabTable();
-        //// TODO: 7/27/2016 issue :  java.lang.IllegalStateException: attempt to re-openForWrite an already-closed object: SQLiteDatabase: /data/user/0/to.marcus.classtab/databases/classTab.db
-        //mApplicationPresenterImpl.populateTabTitles();
     }
 
     public static ClassTabApplication get(Context context){

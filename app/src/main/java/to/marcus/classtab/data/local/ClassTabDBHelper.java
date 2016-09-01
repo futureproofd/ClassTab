@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import to.marcus.classtab.data.local.contract.ClassTabDB;
 
 /**
@@ -14,6 +16,8 @@ import to.marcus.classtab.data.local.contract.ClassTabDB;
 public class ClassTabDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static ClassTabDBHelper sInstance;
+    private SQLiteDatabase mDatabase;
+    private AtomicInteger mOpenCounter = new AtomicInteger();
 
     private ClassTabDBHelper(Context context){
         super(context, ClassTabDB.DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,6 +28,26 @@ public class ClassTabDBHelper extends SQLiteOpenHelper {
             sInstance = new ClassTabDBHelper(context.getApplicationContext());
         }
         return sInstance;
+    }
+
+    public synchronized SQLiteDatabase getWritableDB(){
+        if(mOpenCounter.incrementAndGet() == 1){
+            mDatabase = sInstance.getWritableDatabase();
+        }
+        return mDatabase;
+    }
+
+    public synchronized SQLiteDatabase getReadableDB(){
+        if(mOpenCounter.incrementAndGet() == 1){
+            mDatabase = sInstance.getReadableDatabase();
+        }
+        return mDatabase;
+    }
+
+    public synchronized void closeDB(){
+        if(mOpenCounter.decrementAndGet() == 0){
+            mDatabase.close();
+        }
     }
 
     @Override

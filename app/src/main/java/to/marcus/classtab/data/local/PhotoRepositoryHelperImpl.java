@@ -27,7 +27,6 @@ import to.marcus.classtab.data.model.Photos;
  * Created by mplienegger on 7/18/2016
  */
 public class PhotoRepositoryHelperImpl implements RepositoryHelper {
-
     private SQLiteDatabase database;
     private ClassTabDBHelper dbHelper;
     private Context mContext;
@@ -38,16 +37,16 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
         dbHelper = ClassTabDBHelper.getInstance(context);
     }
 
-    public void openForWrite() throws SQLException{
-        database = ClassTabDBHelper.getInstance(mContext).getWritableDatabase();
+    private void openForWrite() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getWritableDB();
     }
 
-    public void openForRead() throws SQLException{
-        database = ClassTabDBHelper.getInstance(mContext).getReadableDatabase();
+    private void openForRead() throws SQLException{
+        database = ClassTabDBHelper.getInstance(mContext).getReadableDB();
     }
 
-    public void close(){
-        dbHelper.close();
+    private void close(){
+        ClassTabDBHelper.getInstance(mContext).closeDB();
     }
 
 
@@ -100,9 +99,9 @@ public class PhotoRepositoryHelperImpl implements RepositoryHelper {
                 database.setTransactionSuccessful();
             }finally {
                 database.endTransaction();
+                close();
             }
         }
-        close();
     }
 
     public void populatePhotoURL(List<Photos> urlList){

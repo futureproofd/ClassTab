@@ -57,8 +57,8 @@ public class ApplicationPresenterImpl extends BasePresenter<BaseView> {
                 @Override
                 public void call(Boolean succeeded) {
                     if(succeeded){
-                        downloadPhotos();
                         Log.i("APPLICATION", "success dates!");
+                        populateTabTable();
                     }else{
                         Log.i("APPLICATION", "failure dates!");
                     }
@@ -73,7 +73,7 @@ public class ApplicationPresenterImpl extends BasePresenter<BaseView> {
                 @Override
                 public void call(Boolean succeeded) {
                     if(succeeded){
-                        Log.i("APPLICATION", "success tabs!");
+                        populateTabTitles();
                     }else{
                         Log.i("APPLICATION", "failure tabs!");
                     }
@@ -89,6 +89,7 @@ public class ApplicationPresenterImpl extends BasePresenter<BaseView> {
                 public void call(Boolean succeeded) {
                     if(succeeded){
                         Log.i("APPLICATION", "success tab names!");
+                        downloadPhotos();
                     }else{
                         Log.i("APPLICATION", "failure tab names!");
                     }
