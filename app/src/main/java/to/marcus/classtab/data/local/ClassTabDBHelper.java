@@ -23,6 +23,7 @@ public class ClassTabDBHelper extends SQLiteOpenHelper {
         super(context, ClassTabDB.DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //Singleton - app context
     public static synchronized ClassTabDBHelper getInstance(Context context){
         if(sInstance == null){
             sInstance = new ClassTabDBHelper(context.getApplicationContext());
@@ -30,6 +31,9 @@ public class ClassTabDBHelper extends SQLiteOpenHelper {
         return sInstance;
     }
 
+    /*
+    Activate 'open-state' by incrementing +1 - to avoid concurrent DB access issues
+     */
     public synchronized SQLiteDatabase getWritableDB(){
         if(mOpenCounter.incrementAndGet() == 1){
             mDatabase = sInstance.getWritableDatabase();

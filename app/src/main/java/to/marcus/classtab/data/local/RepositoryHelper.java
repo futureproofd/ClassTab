@@ -3,7 +3,6 @@ package to.marcus.classtab.data.local;
 import java.util.concurrent.Callable;
 
 import to.marcus.classtab.data.local.contract.SQLQueryStatement;
-import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 
 /**
  * Created by marcus on 6/29/2016

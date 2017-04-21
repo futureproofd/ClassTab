@@ -25,6 +25,7 @@ public class ArtistPresenterImpl extends BasePresenter<MainView> {
         this.mDataManager = dataManager;
     }
 
+    //// TODO: 9/1/2016 loads before photos finish downloading. Need a default photo or further concurrency 
     public void loadArtistsWithPhotos(){
         mSubscription = mDataManager.getTopArtistsWithPhotos()
                 .subscribeOn(Schedulers.io())

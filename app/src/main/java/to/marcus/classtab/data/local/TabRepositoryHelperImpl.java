@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 import to.marcus.classtab.data.local.contract.ClassTabDB;
 import to.marcus.classtab.data.local.contract.SQLQueryStatement;
-import to.marcus.classtab.data.local.contract.SQLUpdateStatement;
 import to.marcus.classtab.util.StringUtils;
 
 /**
@@ -123,6 +122,7 @@ public class TabRepositoryHelperImpl implements RepositoryHelper{
         };
     }
 
+    //// TODO: 9/1/2016 not populating 
     public Callable<Boolean> populateTabTitles(HashMap<String,String> tabTitles){
         final HashMap<String,String> tmpTabTitles = tabTitles;
         return new Callable<Boolean>() {
